@@ -1,11 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const storedToken = localStorage.getItem('token');
+const storedUser = localStorage.getItem('user');
+
+const parseStoredUser = () => {
+  if (!storedUser) return null;
+
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    localStorage.removeItem('user');
+    return null;
+  }
+};
+
 const initialState = {
-  user: null,
-  token: localStorage.getItem('token') || null,
+  user: parseStoredUser(),
+  token: storedToken || null,
   isLoading: false,
   error: null,
-  isAuthenticated: !!localStorage.getItem('token')
+  isAuthenticated: !!storedToken
 };
 
 const authSlice = createSlice({
@@ -22,6 +36,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.isAuthenticated = true;
       localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
     loginFailure: (state, action) => {
       state.isLoading = false;
@@ -37,6 +52,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.isAuthenticated = true;
       localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
     registerFailure: (state, action) => {
       state.isLoading = false;
@@ -47,6 +63,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
     clearError: (state) => {
       state.error = null;
