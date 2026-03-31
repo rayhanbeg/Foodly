@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { setSelectedFood } from '../redux/slices/foodSlice'
 import { addToCart } from '../redux/slices/cartSlice'
+import { formatBDT } from '../utils/currency'
 
 export default function FoodDetails() {
   const { id } = useParams()
@@ -118,7 +119,7 @@ export default function FoodDetails() {
           <div className="mb-8">
             <p className="text-neutral-600 mb-2">Price:</p>
             <p className="font-display text-4xl font-bold text-primary">
-              ${selectedFood.price}
+              {formatBDT(selectedFood.price)}
             </p>
           </div>
 
@@ -146,7 +147,7 @@ export default function FoodDetails() {
               onClick={handleAddToCart}
               className="w-full btn-primary py-3 text-lg font-semibold mb-4"
             >
-              Add to Cart - ${(selectedFood.price * quantity).toFixed(2)}
+              Add to Cart - {formatBDT(selectedFood.price * quantity)}
             </button>
           ) : (
             <div className="w-full bg-neutral-300 text-neutral-600 py-3 text-lg font-semibold rounded-lg text-center">

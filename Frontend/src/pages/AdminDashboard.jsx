@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import axiosInstance from '../api/axiosInstance'
+import { formatBDT } from '../utils/currency'
+
+const initialFoodForm = {
+  name: '',
+  description: '',
+  price: '',
+  category: 'mains',
+  image: ''
+}
 
 export default function AdminDashboard() {
   const location = useLocation()
@@ -11,14 +20,13 @@ export default function AdminDashboard() {
       <h1 className="font-display text-3xl font-bold mb-8">Admin Dashboard</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Sidebar */}
         <div className="lg:col-span-1">
           <div className="card p-6 h-fit sticky top-24">
             <nav className="space-y-2">
               <Link
                 to="/admin/orders"
                 className={`block px-4 py-2 rounded-lg font-semibold transition-colors ${
-                  currentPath.includes('/orders')
+                  currentPath.includes('/orders') || currentPath === '/admin'
                     ? 'bg-primary text-white'
                     : 'text-neutral-700 hover:bg-neutral-100'
                 }`}
@@ -49,21 +57,15 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="lg:col-span-3">
-          <Routes>
-            <Route index element={<AdminOrders />} />
-            <Route path="orders" element={<AdminOrders />} />
-            <Route path="foods" element={<AdminFoods />} />
-            <Route path="users" element={<AdminUsers />} />
-          </Routes>
+          <Outlet />
         </div>
       </div>
     </div>
   )
 }
 
-function AdminOrders() {
+export function AdminOrders() {
   const [orders, setOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -78,13 +80,14 @@ function AdminOrders() {
         setIsLoading(false)
       }
     }
+
     fetchOrders()
   }, [])
 
   const updateOrderStatus = async (orderId, status) => {
     try {
       await axiosInstance.put(`/orders/${orderId}/status`, { status })
-      setOrders(orders.map(o => o._id === orderId ? { ...o, status } : o))
+      setOrders(orders.map(o => (o._id === orderId ? { ...o, status } : o)))
     } catch (error) {
       console.error('Failed to update order:', error)
     }
@@ -111,7 +114,7 @@ function AdminOrders() {
               <tr key={order._id} className="border-b border-neutral-100 hover:bg-neutral-50">
                 <td className="py-3 px-4 font-semibold">#{order._id.slice(-6)}</td>
                 <td className="py-3 px-4">{order.userId.name}</td>
-                <td className="py-3 px-4 font-semibold">${order.totalAmount.toFixed(2)}</td>
+                <td className="py-3 px-4 font-semibold">{formatBDT(order.totalAmount)}</td>
                 <td className="py-3 px-4">
                   <select
                     value={order.status}
@@ -127,9 +130,7 @@ function AdminOrders() {
                   </select>
                 </td>
                 <td className="py-3 px-4">
-                  <button className="text-primary hover:underline font-semibold">
-                    View
-                  </button>
+                  <button className="text-primary hover:underline font-semibold">View</button>
                 </td>
               </tr>
             ))}
@@ -140,18 +141,14 @@ function AdminOrders() {
   )
 }
 
-function AdminFoods() {
+export function AdminFoods() {
   const [foods, setFoods] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    category: 'mains',
-    image: ''
-  })
+  const [isSavingEdit, setIsSavingEdit] = useState(false)
+  const [formData, setFormData] = useState(initialFoodForm)
+  const [editingFoodId, setEditingFoodId] = useState(null)
 
   useEffect(() => {
     const fetchFoods = async () => {
@@ -164,6 +161,7 @@ function AdminFoods() {
         setIsLoading(false)
       }
     }
+
     fetchFoods()
   }, [])
 
@@ -195,6 +193,12 @@ function AdminFoods() {
     reader.readAsDataURL(file)
   }
 
+  const resetForm = () => {
+    setFormData(initialFoodForm)
+    setShowForm(false)
+    setEditingFoodId(null)
+  }
+
   const handleAddFood = async () => {
     if (!formData.image) {
       alert('Please upload a food image first.')
@@ -202,17 +206,42 @@ function AdminFoods() {
     }
 
     try {
-      const payload = {
-        ...formData,
-        price: Number(formData.price)
-      }
+      const payload = { ...formData, price: Number(formData.price) }
       const response = await axiosInstance.post('/foods', payload)
       setFoods([response.data, ...foods])
-      setFormData({ name: '', description: '', price: '', category: 'mains', image: '' })
-      setShowForm(false)
+      resetForm()
     } catch (error) {
       console.error('Failed to add food:', error)
       alert(error.response?.data?.message || 'Failed to add food')
+    }
+  }
+
+  const startEditFood = (food) => {
+    setEditingFoodId(food._id)
+    setShowForm(true)
+    setFormData({
+      name: food.name,
+      description: food.description,
+      price: food.price,
+      category: food.category,
+      image: food.image
+    })
+  }
+
+  const handleUpdateFood = async () => {
+    if (!editingFoodId) return
+
+    try {
+      setIsSavingEdit(true)
+      const payload = { ...formData, price: Number(formData.price) }
+      const response = await axiosInstance.put(`/foods/${editingFoodId}`, payload)
+      setFoods(foods.map(food => (food._id === editingFoodId ? response.data : food)))
+      resetForm()
+    } catch (error) {
+      console.error('Failed to update food:', error)
+      alert(error.response?.data?.message || 'Failed to update food')
+    } finally {
+      setIsSavingEdit(false)
     }
   }
 
@@ -220,6 +249,7 @@ function AdminFoods() {
     try {
       await axiosInstance.delete(`/foods/${foodId}`)
       setFoods(foods.filter(f => f._id !== foodId))
+      if (editingFoodId === foodId) resetForm()
     } catch (error) {
       console.error('Failed to delete food:', error)
     }
@@ -232,32 +262,33 @@ function AdminFoods() {
       <div className="card p-6">
         {showForm ? (
           <div className="space-y-4">
-            <h2 className="font-bold text-xl mb-2">Add New Food</h2>
-            <p className="text-sm text-neutral-500 mb-4">Upload an image and create a new menu item.</p>
+            <h2 className="font-bold text-xl mb-2">{editingFoodId ? 'Edit Food' : 'Add New Food'}</h2>
+            <p className="text-sm text-neutral-500 mb-4">Upload an image and fill all details.</p>
             <input
               type="text"
               placeholder="Name"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="input-field"
             />
             <textarea
               placeholder="Description"
               value={formData.description}
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               className="input-field"
               rows="3"
             />
             <input
               type="number"
-              placeholder="Price"
+              min="0"
+              placeholder="Price in BDT"
               value={formData.price}
-              onChange={(e) => setFormData({...formData, price: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               className="input-field"
             />
             <select
               value={formData.category}
-              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               className="input-field"
             >
               <option value="appetizers">Appetizers</option>
@@ -268,30 +299,27 @@ function AdminFoods() {
             </select>
             <div className="space-y-2">
               <label className="block text-sm font-medium text-neutral-700">Food image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="input-field"
-              />
+              <input type="file" accept="image/*" onChange={handleImageUpload} className="input-field" />
               {isUploadingImage && <p className="text-sm text-primary">Uploading image to Cloudinary...</p>}
               {formData.image && (
                 <img src={formData.image} alt="Preview" className="h-28 w-28 object-cover rounded-lg border border-neutral-200" />
               )}
             </div>
             <div className="flex gap-4">
-              <button onClick={handleAddFood} className="btn-primary" disabled={isUploadingImage}>
-                Add Food
-              </button>
-              <button onClick={() => setShowForm(false)} className="btn-outline">
-                Cancel
-              </button>
+              {editingFoodId ? (
+                <button onClick={handleUpdateFood} className="btn-primary" disabled={isUploadingImage || isSavingEdit}>
+                  {isSavingEdit ? 'Updating...' : 'Update Food'}
+                </button>
+              ) : (
+                <button onClick={handleAddFood} className="btn-primary" disabled={isUploadingImage}>
+                  Add Food
+                </button>
+              )}
+              <button onClick={resetForm} className="btn-outline">Cancel</button>
             </div>
           </div>
         ) : (
-          <button onClick={() => setShowForm(true)} className="btn-primary">
-            Add New Food
-          </button>
+          <button onClick={() => setShowForm(true)} className="btn-primary">Add New Food</button>
         )}
       </div>
 
@@ -304,16 +332,14 @@ function AdminFoods() {
                 <img src={food.image} alt={food.name} className="h-16 w-16 rounded-lg object-cover" />
                 <div>
                   <h3 className="font-bold">{food.name}</h3>
-                  <p className="text-primary font-semibold">${food.price}</p>
+                  <p className="text-primary font-semibold">{formatBDT(food.price)}</p>
                 </div>
               </div>
               <p className="text-sm text-neutral-600 mt-3">{food.description.slice(0, 90)}...</p>
-              <button
-                onClick={() => handleDeleteFood(food._id)}
-                className="text-red-500 hover:text-red-700 font-semibold mt-4"
-              >
-                Delete
-              </button>
+              <div className="mt-4 flex gap-5">
+                <button onClick={() => startEditFood(food)} className="text-primary hover:underline font-semibold">Edit</button>
+                <button onClick={() => handleDeleteFood(food._id)} className="text-red-500 hover:text-red-700 font-semibold">Delete</button>
+              </div>
             </div>
           ))}
         </div>
@@ -322,7 +348,7 @@ function AdminFoods() {
   )
 }
 
-function AdminUsers() {
+export function AdminUsers() {
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -337,6 +363,7 @@ function AdminUsers() {
         setIsLoading(false)
       }
     }
+
     fetchUsers()
   }, [])
 

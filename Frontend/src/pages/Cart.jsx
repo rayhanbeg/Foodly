@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart, updateQuantity, clearCart } from '../redux/slices/cartSlice'
+import { formatBDT } from '../utils/currency'
 
 export default function Cart() {
   const dispatch = useDispatch()
@@ -42,7 +43,7 @@ export default function Cart() {
                   />
                   <div className="flex-1">
                     <h3 className="font-bold text-neutral-900">{item.name}</h3>
-                    <p className="text-primary font-semibold">${item.price}</p>
+                    <p className="text-primary font-semibold">{formatBDT(item.price)}</p>
 
                     <div className="flex items-center gap-4 mt-4">
                       <div className="flex items-center gap-2 border border-neutral-300 rounded-lg">
@@ -70,7 +71,7 @@ export default function Cart() {
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-neutral-900">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatBDT(item.price * item.quantity)}
                     </p>
                   </div>
                 </div>
@@ -96,24 +97,24 @@ export default function Cart() {
             <div className="space-y-3 mb-6 pb-6 border-b border-neutral-200">
               <div className="flex justify-between">
                 <span className="text-neutral-600">Subtotal</span>
-                <span className="font-semibold">${totalPrice.toFixed(2)}</span>
+                <span className="font-semibold">{formatBDT(totalPrice)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-600">Delivery Charges</span>
                 <span className="font-semibold">
-                  {deliveryCharges === 0 ? 'Free' : `$${deliveryCharges.toFixed(2)}`}
+                  {deliveryCharges === 0 ? 'Free' : formatBDT(deliveryCharges)}
                 </span>
               </div>
               {totalPrice <= 500 && (
                 <p className="text-sm text-green-600">
-                  Add ${(500 - totalPrice).toFixed(2)} more for free delivery!
+                  Add {formatBDT(500 - totalPrice)} more for free delivery!
                 </p>
               )}
             </div>
 
             <div className="flex justify-between mb-8 text-lg">
               <span className="font-bold">Total</span>
-              <span className="font-bold text-primary text-xl">${finalTotal.toFixed(2)}</span>
+              <span className="font-bold text-primary text-xl">{formatBDT(finalTotal)}</span>
             </div>
 
             <button

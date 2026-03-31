@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axiosInstance from '../api/axiosInstance'
+import { formatBDT } from '../utils/currency'
 
 const statusSteps = ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'delivered']
 
@@ -61,7 +62,7 @@ export default function OrderTracking() {
             <div>
               <p className="text-neutral-600 text-sm">Total Amount</p>
               <p className="font-bold text-lg text-primary">
-                ${order.totalAmount.toFixed(2)}
+                {formatBDT(order.totalAmount)}
               </p>
             </div>
             <div>
@@ -133,7 +134,7 @@ export default function OrderTracking() {
                     Quantity: {item.quantity}
                   </p>
                 </div>
-                <p className="font-semibold">${item.subtotal.toFixed(2)}</p>
+                <p className="font-semibold">{formatBDT(item.subtotal)}</p>
               </div>
             ))}
           </div>
@@ -146,19 +147,19 @@ export default function OrderTracking() {
             <div className="flex justify-between">
               <span className="text-neutral-600">Subtotal</span>
               <span className="font-semibold">
-                ${(order.totalAmount - order.deliveryCharges).toFixed(2)}
+                {formatBDT(order.totalAmount - order.deliveryCharges)}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-600">Delivery Charges</span>
               <span className="font-semibold">
-                {order.deliveryCharges === 0 ? 'Free' : `$${order.deliveryCharges.toFixed(2)}`}
+                {order.deliveryCharges === 0 ? 'Free' : formatBDT(order.deliveryCharges)}
               </span>
             </div>
             <div className="flex justify-between border-t border-neutral-200 pt-3 mt-3">
               <span className="font-bold">Total</span>
               <span className="font-bold text-lg text-primary">
-                ${order.totalAmount.toFixed(2)}
+                {formatBDT(order.totalAmount)}
               </span>
             </div>
           </div>
