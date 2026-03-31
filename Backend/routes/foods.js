@@ -1,18 +1,28 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Food from '../models/Food.js';
+import Order from '../models/Order.js';
+import User from '../models/User.js';
 import { verifyToken, adminOnly } from '../middleware/auth.js';
 import { uploadImageToCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
 
+const sortOptions = {
+  newest: { createdAt: -1 },
+  rating: { rating: -1, createdAt: -1 },
+  price_asc: { price: 1, createdAt: -1 },
+  price_desc: { price: -1, createdAt: -1 },
+  name_asc: { name: 1 }
+};
+
 // Get all foods with optional filtering
 router.get('/', async (req, res) => {
   try {
-    const { category, search } = req.query;
-    let query = {};
+    const { category, search, sort = 'newest' } = req.query;
+    const query = {};
 
-    if (category) {
+    if (category && category !== 'all') {
       query.category = category;
     }
 
@@ -23,14 +33,14 @@ router.get('/', async (req, res) => {
       ];
     }
 
-    const foods = await Food.find(query).sort({ createdAt: -1 });
+    const sortQuery = sortOptions[sort] || sortOptions.newest;
+    const foods = await Food.find(query).sort(sortQuery);
     res.json(foods);
   } catch (error) {
     console.error('Get foods error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 // Upload image to Cloudinary (Admin only)
 router.post('/upload', verifyToken, adminOnly, async (req, res) => {
@@ -128,7 +138,7 @@ router.delete('/:id', verifyToken, adminOnly, async (req, res) => {
   }
 });
 
-// Add review to food
+// Add review to food (Only verified purchasers)
 router.post('/:id/reviews', verifyToken, async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -141,16 +151,33 @@ router.post('/:id/reviews', verifyToken, async (req, res) => {
       return res.status(404).json({ message: 'Food not found' });
     }
 
+    const hasPurchased = await Order.exists({
+      userId: req.userId,
+      status: 'delivered',
+      'items.foodId': food._id
+    });
+
+    if (!hasPurchased) {
+      return res.status(403).json({
+        message: 'Only verified users who completed a purchase can rate this food'
+      });
+    }
+
+    const alreadyReviewed = food.reviews.some((review) => review.userId?.toString() === req.userId);
+    if (alreadyReviewed) {
+      return res.status(409).json({ message: 'You have already reviewed this food' });
+    }
+
+    const user = await User.findById(req.userId).select('name');
     const review = {
       userId: req.userId,
-      userName: req.body.userName || 'Anonymous',
+      userName: user?.name || 'Verified User',
       rating,
       comment
     };
 
     food.reviews.push(review);
-    
-    // Update rating
+
     const totalRating = food.reviews.reduce((sum, r) => sum + r.rating, 0);
     food.rating = totalRating / food.reviews.length;
 

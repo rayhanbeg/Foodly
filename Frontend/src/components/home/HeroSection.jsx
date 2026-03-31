@@ -36,7 +36,7 @@ export default function HeroSection() {
             </p>
 
             {/* CTA buttons */}
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-12">
+            <div className="flex gap-1 lg:gap-4 justify-center lg:justify-start mb-12">
               <Link
                 to="/menu"
                 className="group inline-flex items-center gap-2 bg-gray-900 text-white px-8 py-3.5 rounded-full font-medium hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
