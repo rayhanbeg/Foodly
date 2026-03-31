@@ -6,7 +6,7 @@ import { setSelectedFood } from '../redux/slices/foodSlice'
 import { addToCart } from '../redux/slices/cartSlice'
 import { formatBDT } from '../utils/currency'
 
-export default function FoodDetails() {
+function FoodDetails() {
   const { id } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -252,3 +252,4 @@ export default function FoodDetails() {
     </div>
   )
 }
+export default FoodDetails

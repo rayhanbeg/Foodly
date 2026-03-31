@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { addToCart } from '../redux/slices/cartSlice'
 import { formatBDT } from '../utils/currency'
 
-export default function FoodCard({ food }) {
+function FoodCard({ food }) {
   const dispatch = useDispatch()
 
   const handleAddToCart = () => {
@@ -70,3 +70,4 @@ export default function FoodCard({ food }) {
     </div>
   )
 }
+export default FoodCard

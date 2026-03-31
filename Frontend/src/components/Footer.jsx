@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="bg-neutral-900 text-neutral-50 mt-16">
       <div className="container-fluid py-12">
@@ -93,3 +93,4 @@ export default function Footer() {
     </footer>
   )
 }
+export default Footer

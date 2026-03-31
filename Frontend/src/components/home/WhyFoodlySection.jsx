@@ -16,7 +16,7 @@ const features = [
   },
 ];
 
-export default function WhyFoodlySection() {
+ function WhyFoodlySection() {
   return (
     <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-orange-50/40 overflow-hidden">
       
@@ -75,3 +75,4 @@ export default function WhyFoodlySection() {
     </section>
   );
 }
+export default WhyFoodlySection

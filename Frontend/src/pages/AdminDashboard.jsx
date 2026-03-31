@@ -11,7 +11,7 @@ const initialFoodForm = {
   image: ''
 }
 
-export default function AdminDashboard() {
+function AdminDashboard() {
   const location = useLocation()
   const currentPath = location.pathname
 
@@ -397,3 +397,4 @@ export function AdminUsers() {
     </div>
   )
 }
+export default AdminDashboard

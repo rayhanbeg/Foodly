@@ -5,7 +5,7 @@ import { formatBDT } from '../utils/currency'
 
 const statusSteps = ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'delivered']
 
-export default function OrderTracking() {
+function OrderTracking() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [order, setOrder] = useState(null)
@@ -168,3 +168,4 @@ export default function OrderTracking() {
     </div>
   )
 }
+export default OrderTracking

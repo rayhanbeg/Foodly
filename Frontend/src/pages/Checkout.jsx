@@ -6,7 +6,7 @@ import { clearCart } from '../redux/slices/cartSlice'
 import { createOrderStart, createOrderSuccess, createOrderFailure } from '../redux/slices/orderSlice'
 import { formatBDT } from '../utils/currency'
 
-export default function Checkout() {
+function Checkout() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { items, totalPrice } = useSelector(state => state.cart)
@@ -192,3 +192,4 @@ export default function Checkout() {
     </div>
   )
 }
+export default Checkout

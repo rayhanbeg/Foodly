@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart, updateQuantity, clearCart } from '../redux/slices/cartSlice'
 import { formatBDT } from '../utils/currency'
 
-export default function Cart() {
+function Cart() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { items, totalPrice } = useSelector(state => state.cart)
@@ -129,3 +129,4 @@ export default function Cart() {
     </div>
   )
 }
+export default Cart

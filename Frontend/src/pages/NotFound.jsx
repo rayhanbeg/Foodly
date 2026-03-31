@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function NotFound() {
+function NotFound() {
   return (
     <div className="container-fluid py-20 text-center">
       <div className="max-w-md mx-auto">
@@ -18,3 +18,4 @@ export default function NotFound() {
     </div>
   )
 }
+export default NotFound

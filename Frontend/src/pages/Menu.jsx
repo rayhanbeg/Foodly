@@ -13,7 +13,7 @@ const categories = [
   { id: 'sides', name: 'Sides' }
 ]
 
-export default function Menu() {
+function Menu() {
   const [searchInput, setSearchInput] = useState('')
   const dispatch = useDispatch()
   const { filteredFoods, isLoading, currentCategory } = useSelector(state => state.food)
@@ -92,3 +92,4 @@ export default function Menu() {
     </div>
   )
 }
+export default Menu

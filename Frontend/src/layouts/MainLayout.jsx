@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-export default function MainLayout() {
+function MainLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50">
       <Navbar />
@@ -13,3 +13,4 @@ export default function MainLayout() {
     </div>
   )
 }
+export default MainLayout

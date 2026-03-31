@@ -7,7 +7,7 @@ import WhyFoodlySection from '../components/home/WhyFoodlySection'
 import FeaturedFoodsSection from '../components/home/FeaturedFoodsSection'
 import CtaSection from '../components/home/CtaSection'
 
-export default function Home() {
+function Home() {
   const dispatch = useDispatch()
   const { foods, isLoading } = useSelector(state => state.food)
 
@@ -34,3 +34,4 @@ export default function Home() {
     </div>
   )
 }
+export default Home

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/slices/authSlice'
 
-export default function Navbar() {
+function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -141,3 +141,4 @@ export default function Navbar() {
     </nav>
   )
 }
+export default Navbar

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { loginStart, loginSuccess, loginFailure } from '../redux/slices/authSlice'
 
-export default function Login() {
+function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -89,3 +89,4 @@ export default function Login() {
     </div>
   )
 }
+export default Login

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { registerStart, registerSuccess, registerFailure } from '../redux/slices/authSlice'
 
-export default function Register() {
+function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -123,3 +123,4 @@ export default function Register() {
     </div>
   )
 }
+export default Register

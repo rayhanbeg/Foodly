@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { formatBDT } from '../utils/currency'
 
-export default function UserProfile() {
+function UserProfile() {
   const navigate = useNavigate()
   const user = useSelector(state => state.auth.user)
   const [profile, setProfile] = useState(null)
@@ -207,3 +207,4 @@ export default function UserProfile() {
     </div>
   )
 }
+export default UserProfile
