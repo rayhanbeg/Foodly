@@ -2,6 +2,7 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Food from '../models/Food.js';
 import { verifyToken, adminOnly } from '../middleware/auth.js';
+import { uploadImageToCloudinary } from '../config/cloudinary.js';
 
 const router = express.Router();
 
@@ -27,6 +28,24 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Get foods error:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Upload image to Cloudinary (Admin only)
+router.post('/upload', verifyToken, adminOnly, async (req, res) => {
+  try {
+    const { imageData } = req.body;
+
+    if (!imageData) {
+      return res.status(400).json({ message: 'Image data is required' });
+    }
+
+    const uploadedImage = await uploadImageToCloudinary(imageData);
+    res.status(201).json(uploadedImage);
+  } catch (error) {
+    console.error('Image upload error:', error);
+    res.status(500).json({ message: error.message || 'Image upload failed' });
   }
 });
 

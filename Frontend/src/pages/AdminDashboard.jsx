@@ -144,6 +144,7 @@ function AdminFoods() {
   const [foods, setFoods] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -166,14 +167,52 @@ function AdminFoods() {
     fetchFoods()
   }, [])
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file.')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = async () => {
+      try {
+        setIsUploadingImage(true)
+        const response = await axiosInstance.post('/foods/upload', {
+          imageData: reader.result
+        })
+        setFormData(prev => ({ ...prev, image: response.data.url }))
+      } catch (error) {
+        console.error('Failed to upload image:', error)
+        alert(error.response?.data?.message || 'Image upload failed')
+      } finally {
+        setIsUploadingImage(false)
+      }
+    }
+
+    reader.readAsDataURL(file)
+  }
+
   const handleAddFood = async () => {
+    if (!formData.image) {
+      alert('Please upload a food image first.')
+      return
+    }
+
     try {
-      const response = await axiosInstance.post('/foods', formData)
-      setFoods([...foods, response.data])
+      const payload = {
+        ...formData,
+        price: Number(formData.price)
+      }
+      const response = await axiosInstance.post('/foods', payload)
+      setFoods([response.data, ...foods])
       setFormData({ name: '', description: '', price: '', category: 'mains', image: '' })
       setShowForm(false)
     } catch (error) {
       console.error('Failed to add food:', error)
+      alert(error.response?.data?.message || 'Failed to add food')
     }
   }
 
@@ -193,7 +232,8 @@ function AdminFoods() {
       <div className="card p-6">
         {showForm ? (
           <div className="space-y-4">
-            <h2 className="font-bold text-xl mb-4">Add New Food</h2>
+            <h2 className="font-bold text-xl mb-2">Add New Food</h2>
+            <p className="text-sm text-neutral-500 mb-4">Upload an image and create a new menu item.</p>
             <input
               type="text"
               placeholder="Name"
@@ -226,15 +266,21 @@ function AdminFoods() {
               <option value="beverages">Beverages</option>
               <option value="sides">Sides</option>
             </select>
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={formData.image}
-              onChange={(e) => setFormData({...formData, image: e.target.value})}
-              className="input-field"
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-neutral-700">Food image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="input-field"
+              />
+              {isUploadingImage && <p className="text-sm text-primary">Uploading image to Cloudinary...</p>}
+              {formData.image && (
+                <img src={formData.image} alt="Preview" className="h-28 w-28 object-cover rounded-lg border border-neutral-200" />
+              )}
+            </div>
             <div className="flex gap-4">
-              <button onClick={handleAddFood} className="btn-primary">
+              <button onClick={handleAddFood} className="btn-primary" disabled={isUploadingImage}>
                 Add Food
               </button>
               <button onClick={() => setShowForm(false)} className="btn-outline">
@@ -253,10 +299,15 @@ function AdminFoods() {
         <h2 className="font-bold text-2xl mb-6">Foods Management</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {foods.map(food => (
-            <div key={food._id} className="border border-neutral-200 rounded-lg p-4">
-              <h3 className="font-bold">{food.name}</h3>
-              <p className="text-primary font-semibold">${food.price}</p>
-              <p className="text-sm text-neutral-600 mt-2">{food.description.slice(0, 50)}...</p>
+            <div key={food._id} className="border border-neutral-200 rounded-lg p-4 bg-white/70 backdrop-blur-sm">
+              <div className="flex gap-4">
+                <img src={food.image} alt={food.name} className="h-16 w-16 rounded-lg object-cover" />
+                <div>
+                  <h3 className="font-bold">{food.name}</h3>
+                  <p className="text-primary font-semibold">${food.price}</p>
+                </div>
+              </div>
+              <p className="text-sm text-neutral-600 mt-3">{food.description.slice(0, 90)}...</p>
               <button
                 onClick={() => handleDeleteFood(food._id)}
                 className="text-red-500 hover:text-red-700 font-semibold mt-4"
