@@ -10,7 +10,7 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
 import UserProfile from './pages/UserProfile'
-import AdminDashboard, { AdminFoods, AdminOrders, AdminUsers } from './pages/AdminDashboard'
+import AdminDashboard, { AdminFoodForm, AdminFoods, AdminOrders, AdminUsers } from './pages/AdminDashboard'
 import NotFound from './pages/NotFound'
 
 function ProtectedRoute({ isAuthenticated, children }) {
@@ -58,6 +58,8 @@ function App() {
           <Route index element={<AdminOrders />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="foods" element={<AdminFoods />} />
+          <Route path="foods/new" element={<AdminFoodForm />} />
+          <Route path="foods/:foodId/edit" element={<AdminFoodForm />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
 

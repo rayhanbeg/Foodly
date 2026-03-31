@@ -14,8 +14,9 @@ function FoodDetails() {
   const [isLoading, setIsLoading] = useState(true)
   const selectedFood = useSelector(state => state.food.selectedFood)
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
-  const [reviewData, setReviewData] = useState({ rating: 5, comment: '', userName: '' })
+  const [reviewData, setReviewData] = useState({ rating: 5, comment: '' })
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [reviewError, setReviewError] = useState('')
 
   useEffect(() => {
     const fetchFood = async () => {
@@ -52,17 +53,18 @@ function FoodDetails() {
     }
 
     try {
+      setReviewError('')
       await axiosInstance.post(`/foods/${id}/reviews`, {
-        ...reviewData,
-        userName: reviewData.userName || 'Anonymous'
+        ...reviewData
       })
-      setReviewData({ rating: 5, comment: '', userName: '' })
+      setReviewData({ rating: 5, comment: '' })
       setShowReviewForm(false)
 
       const response = await axiosInstance.get(`/foods/${id}`)
       dispatch(setSelectedFood(response.data))
     } catch (error) {
       console.error('Failed to add review:', error)
+      setReviewError(error.response?.data?.message || 'Review submission failed')
     }
   }
 
@@ -172,18 +174,9 @@ function FoodDetails() {
 
         {showReviewForm && (
           <div className="card p-6 mb-8">
-            <h3 className="font-bold text-lg mb-4">Add Your Review</h3>
+            <h3 className="font-bold text-lg mb-1">Add Your Review</h3>
+            <p className="text-sm text-neutral-500 mb-3">Only verified users with a delivered purchase can submit ratings.</p>
             <div className="space-y-4">
-              <div>
-                <label className="block font-semibold mb-2">Name (Optional)</label>
-                <input
-                  type="text"
-                  value={reviewData.userName}
-                  onChange={(e) => setReviewData({...reviewData, userName: e.target.value})}
-                  className="input-field"
-                  placeholder="Your name"
-                />
-              </div>
               <div>
                 <label className="block font-semibold mb-2">Rating</label>
                 <select
@@ -206,6 +199,7 @@ function FoodDetails() {
                   placeholder="Your review..."
                 />
               </div>
+              {reviewError && <p className="text-sm text-red-500">{reviewError}</p>}
               <div className="flex gap-4">
                 <button
                   onClick={handleAddReview}

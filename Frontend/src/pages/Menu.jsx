@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
-import { fetchFoodsStart, fetchFoodsSuccess, fetchFoodsFailure, filterByCategory, searchFoods } from '../redux/slices/foodSlice'
+import { fetchFoodsStart, fetchFoodsSuccess, fetchFoodsFailure } from '../redux/slices/foodSlice'
 import FoodCard from '../components/FoodCard'
 
 const categories = [
@@ -13,78 +14,116 @@ const categories = [
   { id: 'sides', name: 'Sides' }
 ]
 
+const sortOptions = [
+  { id: 'newest', name: 'Newest' },
+  { id: 'rating', name: 'Top Rated' },
+  { id: 'price_asc', name: 'Price: Low to High' },
+  { id: 'price_desc', name: 'Price: High to Low' },
+  { id: 'name_asc', name: 'Name: A-Z' }
+]
+
 function Menu() {
-  const [searchInput, setSearchInput] = useState('')
   const dispatch = useDispatch()
-  const { filteredFoods, isLoading, currentCategory } = useSelector(state => state.food)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { foods, isLoading } = useSelector(state => state.food)
+
+  const category = searchParams.get('category') || 'all'
+  const search = searchParams.get('search') || ''
+  const sort = searchParams.get('sort') || 'newest'
 
   useEffect(() => {
     const fetchFoods = async () => {
       dispatch(fetchFoodsStart())
       try {
-        const response = await axiosInstance.get('/foods')
+        const response = await axiosInstance.get('/foods', {
+          params: {
+            ...(category !== 'all' && { category }),
+            ...(search && { search }),
+            sort
+          }
+        })
         dispatch(fetchFoodsSuccess(response.data))
       } catch (error) {
         dispatch(fetchFoodsFailure(error.message))
       }
     }
+
     fetchFoods()
-  }, [dispatch])
+  }, [dispatch, category, search, sort])
 
-  const handleCategoryChange = (category) => {
-    dispatch(filterByCategory(category))
-  }
+  const updateParam = (key, value) => {
+    const next = new URLSearchParams(searchParams)
 
-  const handleSearch = (e) => {
-    const value = e.target.value
-    setSearchInput(value)
-    dispatch(searchFoods(value))
+    if (!value || value === 'all' || (key === 'sort' && value === 'newest')) {
+      next.delete(key)
+    } else {
+      next.set(key, value)
+    }
+
+    setSearchParams(next)
   }
 
   return (
     <div className="container-fluid py-12">
-      <h1 className="font-display text-4xl font-bold mb-8">Our Menu</h1>
+      <div className="flex flex-wrap items-start justify-between gap-6 mb-8">
+        <div>
+          <h1 className="font-display text-4xl font-bold">Our Menu</h1>
+          <p className="text-neutral-500 mt-2">Smart search & sorting with shareable URLs.</p>
+        </div>
 
-      {/* Search Bar */}
-      <div className="mb-8">
-        <input
-          type="text"
-          placeholder="Search for food..."
-          value={searchInput}
-          onChange={handleSearch}
-          className="input-field max-w-md"
-        />
+        <div className="w-full lg:w-auto lg:min-w-[320px]">
+          <input
+            type="text"
+            placeholder="Search by name or description"
+            value={search}
+            onChange={(e) => updateParam('search', e.target.value)}
+            className="input-field"
+          />
+        </div>
       </div>
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-3 mb-12">
-        {categories.map(cat => (
-          <button
-            key={cat.id}
-            onClick={() => handleCategoryChange(cat.id)}
-            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-              currentCategory === cat.id
-                ? 'bg-primary text-white'
-                : 'bg-neutral-200 text-neutral-800 hover:bg-neutral-300'
-            }`}
+      <div className="card p-4 mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap gap-2">
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => updateParam('category', cat.id)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                category === cat.id
+                  ? 'bg-primary text-white'
+                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-semibold text-neutral-600">Sort:</label>
+          <select
+            value={sort}
+            onChange={(e) => updateParam('sort', e.target.value)}
+            className="input-field !w-auto !py-2"
           >
-            {cat.name}
-          </button>
-        ))}
+            {sortOptions.map(option => (
+              <option key={option.id} value={option.id}>{option.name}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Foods Grid */}
       {isLoading ? (
         <div className="text-center py-12">
           <p className="text-neutral-600">Loading foods...</p>
         </div>
-      ) : filteredFoods.length === 0 ? (
+      ) : foods.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-neutral-600 text-lg">No foods found. Try a different search or category.</p>
+          <p className="text-neutral-600 text-lg">No foods found. Try a different search, sort, or category.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredFoods.map(food => (
+          {foods.map(food => (
             <FoodCard key={food._id} food={food} />
           ))}
         </div>
@@ -92,4 +131,5 @@ function Menu() {
     </div>
   )
 }
+
 export default Menu
