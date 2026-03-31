@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-/* Base Reset */
+@theme {
+  --color-primary: #f97316;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -14,24 +17,24 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background-color: #F9FAFB;
+    background-color: #f9fafb;
     color: #111827;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
   }
 }
 
-/* Custom Components */
 @layer components {
-  /* .btn-primary {
+  .btn-primary {
     @apply bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
-  }
-
-  .btn-secondary {
-    @apply bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
   }
 
   .btn-outline {
@@ -44,9 +47,9 @@
 
   .card {
     @apply bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow;
-  } */
+  }
 
-  /* .container-fluid {
+  .container-fluid {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  } */
+  }
 }

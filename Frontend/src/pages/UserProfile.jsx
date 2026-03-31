@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
+import { formatBDT } from '../utils/currency'
 
 export default function UserProfile() {
   const navigate = useNavigate()
@@ -191,7 +192,7 @@ export default function UserProfile() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold">${order.totalAmount.toFixed(2)}</p>
+                      <p className="font-bold">{formatBDT(order.totalAmount)}</p>
                       <p className="text-sm capitalize bg-neutral-200 text-neutral-700 px-2 py-1 rounded">
                         {order.status}
                       </p>
