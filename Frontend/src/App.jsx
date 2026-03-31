@@ -1,7 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -11,57 +10,60 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
 import UserProfile from './pages/UserProfile'
-import AdminDashboard from './pages/AdminDashboard'
+import AdminDashboard, { AdminFoods, AdminOrders, AdminUsers } from './pages/AdminDashboard'
 import NotFound from './pages/NotFound'
+
+function ProtectedRoute({ isAuthenticated, children }) {
+  return isAuthenticated ? children : <Navigate to="/login" replace />
+}
+
+function AdminRoute({ isAuthenticated, userRole, children }) {
+  return isAuthenticated && userRole === 'admin' ? children : <Navigate to="/" replace />
+}
 
 function App() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
   const userRole = useSelector(state => state.auth.user?.role)
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50">
-      <Navbar />
-      
-      <main className="flex-1 ">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/food/:id" element={<FoodDetails />} />
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/" /> : <Register />} />
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/food/:id" element={<FoodDetails />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/" replace /> : <Register />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/cart"
-            element={isAuthenticated ? <Cart /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/checkout"
-            element={isAuthenticated ? <Checkout /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/orders/:id"
-            element={isAuthenticated ? <OrderTracking /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/profile"
-            element={isAuthenticated ? <UserProfile /> : <Navigate to="/login" />}
-          />
+        <Route
+          path="/cart"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><Cart /></ProtectedRoute>}
+        />
+        <Route
+          path="/checkout"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><Checkout /></ProtectedRoute>}
+        />
+        <Route
+          path="/orders/:id"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><OrderTracking /></ProtectedRoute>}
+        />
+        <Route
+          path="/profile"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><UserProfile /></ProtectedRoute>}
+        />
 
-          {/* Admin Routes */}
-          <Route
-            path="/admin/*"
-            element={isAuthenticated && userRole === 'admin' ? <AdminDashboard /> : <Navigate to="/" />}
-          />
+        <Route
+          path="/admin"
+          element={<AdminRoute isAuthenticated={isAuthenticated} userRole={userRole}><AdminDashboard /></AdminRoute>}
+        >
+          <Route index element={<AdminOrders />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="foods" element={<AdminFoods />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
 
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-
-      <Footer />
-    </div>
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
 

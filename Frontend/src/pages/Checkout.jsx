@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { clearCart } from '../redux/slices/cartSlice'
 import { createOrderStart, createOrderSuccess, createOrderFailure } from '../redux/slices/orderSlice'
+import { formatBDT } from '../utils/currency'
 
 export default function Checkout() {
   const navigate = useNavigate()
@@ -128,7 +129,7 @@ export default function Checkout() {
                       {item.name} x {item.quantity}
                     </span>
                     <span className="font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatBDT(item.price * item.quantity)}
                     </span>
                   </div>
                 ))}
@@ -140,7 +141,7 @@ export default function Checkout() {
               disabled={creatingOrder}
               className="w-full btn-primary py-3 text-lg font-semibold disabled:opacity-50"
             >
-              {creatingOrder ? 'Processing...' : `Place Order - $${finalTotal.toFixed(2)}`}
+              {creatingOrder ? 'Processing...' : `Place Order - ${formatBDT(finalTotal)}`}
             </button>
           </form>
         </div>
@@ -155,7 +156,7 @@ export default function Checkout() {
                 <div key={item.id} className="text-sm">
                   <p className="font-semibold">{item.name}</p>
                   <p className="text-neutral-600">
-                    {item.quantity} x ${item.price.toFixed(2)}
+                    {item.quantity} x {formatBDT(item.price)}
                   </p>
                 </div>
               ))}
@@ -164,19 +165,19 @@ export default function Checkout() {
             <div className="space-y-3 mb-6 pb-6 border-b border-neutral-200">
               <div className="flex justify-between">
                 <span className="text-neutral-600">Subtotal</span>
-                <span className="font-semibold">${totalPrice.toFixed(2)}</span>
+                <span className="font-semibold">{formatBDT(totalPrice)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-600">Delivery</span>
                 <span className="font-semibold">
-                  {deliveryCharges === 0 ? 'Free' : `$${deliveryCharges}`}
+                  {deliveryCharges === 0 ? 'Free' : formatBDT(deliveryCharges)}
                 </span>
               </div>
             </div>
 
             <div className="flex justify-between mb-6">
               <span className="font-bold">Total</span>
-              <span className="font-bold text-primary text-lg">${finalTotal.toFixed(2)}</span>
+              <span className="font-bold text-primary text-lg">{formatBDT(finalTotal)}</span>
             </div>
 
             <button
