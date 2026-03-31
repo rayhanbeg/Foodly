@@ -14,7 +14,7 @@ export default function Checkout() {
 
   const [formData, setFormData] = useState({
     deliveryAddress: user?.address || '',
-    paymentMethod: 'credit_card',
+    paymentMethod: 'Cash on Delivery',
     notes: ''
   })
 
@@ -88,21 +88,20 @@ export default function Checkout() {
             <div className="card p-6">
               <h2 className="font-bold text-lg mb-4">Payment Method</h2>
               <div className="space-y-3">
-                {['credit_card', 'debit_card', 'upi', 'wallet'].map(method => (
-                  <label key={method} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={method}
-                      checked={formData.paymentMethod === method}
-                      onChange={handleChange}
-                      className="w-4 h-4"
-                    />
-                    <span className="font-semibold capitalize">
-                      {method.replace('_', ' ')}
-                    </span>
-                  </label>
-                ))}
+                 <label className="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash_on_delivery"
+                    checked
+                    readOnly
+                    className="w-4 h-4"
+                  />
+                  <span className="font-semibold">Cash on Delivery (COD)</span>
+                </label>
+                <p className="text-sm text-neutral-600">
+                  Currently, we only support Cash on Delivery for checkout.
+                </p>
               </div>
             </div>
 

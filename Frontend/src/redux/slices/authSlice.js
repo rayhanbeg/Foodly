@@ -1,15 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+
+const storedToken = localStorage.getItem("token");
+const storedUser = localStorage.getItem("user");
+
+const perseStoredUser = () => {
+  if (!storedUser) return null;
+
+  try {
+  return JSON.parse(storedUser);
+} catch (error) {
+  localStorage.removeItem("user");
+  return null;
+};
+};
+
+
 
 const initialState = {
-  user: null,
-  token: localStorage.getItem('token') || null,
+  user: perseStoredUser(),
+  token: storedToken || null,
   isLoading: false,
   error: null,
-  isAuthenticated: !!localStorage.getItem('token')
+  isAuthenticated: !!storedToken,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     loginStart: (state) => {
@@ -21,7 +37,8 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     },
     loginFailure: (state, action) => {
       state.isLoading = false;
@@ -36,7 +53,8 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     },
     registerFailure: (state, action) => {
       state.isLoading = false;
@@ -46,12 +64,13 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
     clearError: (state) => {
       state.error = null;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -62,7 +81,7 @@ export const {
   registerSuccess,
   registerFailure,
   logout,
-  clearError
+  clearError,
 } = authSlice.actions;
 
 export default authSlice.reducer;
