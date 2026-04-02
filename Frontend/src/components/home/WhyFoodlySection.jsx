@@ -7,7 +7,7 @@ const features = [
   {
     icon: "🍱",
     title: "Freshly prepared",
-    desc: "Every meal is cooked on demand by trusted partner kitchens.",
+    desc: "Every meal is cooked on demand by our in-house chefs at Foodly branches.",
   },
   {
     icon: "🏷️",

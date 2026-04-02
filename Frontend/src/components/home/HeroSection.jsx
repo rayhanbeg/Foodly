@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const highlights = [
   { label: 'Average delivery', value: '30 min', icon: '⏱️' },
   { label: 'Customer rating', value: '4.9', icon: '⭐' },
-  { label: 'Partner restaurants', value: '200+', icon: '🏪' },
+  { label: 'Our branches', value: '3', icon: '🏨' },
 ];
 
 export default function HeroSection() {
@@ -31,8 +31,8 @@ export default function HeroSection() {
             </h1>
 
             <p className="text-lg text-gray-600 mb-10 leading-relaxed">
-              Discover the best local restaurants and get your favorites delivered in minutes. 
-              Free delivery on first order.
+              Order directly from our own signature kitchen and branch network. 
+              Same brand quality, every single order.
             </p>
 
             {/* CTA buttons */}
@@ -50,7 +50,7 @@ export default function HeroSection() {
                 to="/register"
                 className="inline-flex items-center gap-2 border border-gray-300 bg-white text-gray-700 px-8 py-3.5 rounded-full font-medium hover:bg-gray-50 hover:border-gray-400 transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
               >
-                Partner with us
+                Create account
               </Link>
             </div>
 

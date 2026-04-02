@@ -5,6 +5,7 @@ import Order from '../models/Order.js';
 import User from '../models/User.js';
 import { verifyToken, adminOnly } from '../middleware/auth.js';
 import { uploadImageToCloudinary } from '../config/cloudinary.js';
+import { BRANCHES, DEFAULT_BRANCH_CODE, getBranchByCode } from '../constants/business.js';
 
 const router = express.Router();
 
@@ -16,10 +17,14 @@ const sortOptions = {
   name_asc: { name: 1 }
 };
 
+router.get('/meta/branches', (_req, res) => {
+  res.json(BRANCHES);
+});
+
 // Get all foods with optional filtering
 router.get('/', async (req, res) => {
   try {
-    const { category, search, sort = 'newest' } = req.query;
+    const { category, search, branchCode, sort = 'newest' } = req.query;
     const query = {};
 
     if (category && category !== 'all') {
@@ -31,6 +36,9 @@ router.get('/', async (req, res) => {
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } }
       ];
+    }
+    if (branchCode) {
+      query.branchCode = branchCode;
     }
 
     const sortQuery = sortOptions[sort] || sortOptions.newest;
@@ -83,6 +91,8 @@ router.post(
     body('description').trim().notEmpty().withMessage('Description is required'),
     body('price').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
     body('category').isIn(['appetizers', 'mains', 'desserts', 'beverages', 'sides']).withMessage('Invalid category'),
+    body('branchCode').optional().isIn(BRANCHES.map((branch) => branch.code)).withMessage('Invalid branch'),
+    body('prepTimeMinutes').optional().isInt({ min: 5, max: 120 }).withMessage('Prep time must be between 5 and 120 minutes'),
     body('image').isURL().withMessage('Valid image URL is required')
   ],
   async (req, res) => {
@@ -92,8 +102,17 @@ router.post(
     }
 
     try {
-      const { name, description, price, category, image } = req.body;
-      const food = new Food({ name, description, price, category, image });
+      const { name, description, price, category, image, branchCode = DEFAULT_BRANCH_CODE, prepTimeMinutes } = req.body;
+      const food = new Food({
+        name,
+        description,
+        price,
+        category,
+        image,
+        branchCode,
+        branchName: getBranchByCode(branchCode)?.name,
+        prepTimeMinutes
+      });
       await food.save();
       res.status(201).json(food);
     } catch (error) {
@@ -106,10 +125,20 @@ router.post(
 // Update food (Admin only)
 router.put('/:id', verifyToken, adminOnly, async (req, res) => {
   try {
-    const { name, description, price, category, image, available } = req.body;
+    const { name, description, price, category, image, available, branchCode, prepTimeMinutes } = req.body;
+    const branch = branchCode ? getBranchByCode(branchCode) : null;
     const food = await Food.findByIdAndUpdate(
       req.params.id,
-      { name, description, price, category, image, available },
+      {
+        name,
+        description,
+        price,
+        category,
+        image,
+        available,
+        ...(branchCode ? { branchCode, branchName: branch?.name } : {}),
+        ...(prepTimeMinutes !== undefined ? { prepTimeMinutes } : {})
+      },
       { new: true, runValidators: true }
     );
 

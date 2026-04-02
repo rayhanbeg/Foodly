@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../api/axiosInstance'
 import { formatBDT } from '../utils/currency'
+import { BRANCHES, DEFAULT_BRANCH_CODE } from '../constants/business'
 
 const initialFoodForm = {
   name: '',
   description: '',
   price: '',
   category: 'mains',
+  branchCode: DEFAULT_BRANCH_CODE,
   image: '',
+  prepTimeMinutes: 25,
   available: true
 }
 
@@ -18,7 +21,7 @@ function AdminDashboard() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="font-display text-3xl font-bold">Admin Control Center</h1>
-          <p className="text-neutral-500 mt-1">Manage orders, foods, and users with dedicated workflows.</p>
+          <p className="text-neutral-500 mt-1">Manage your own restaurant branches, menu items, and orders.</p>
         </div>
         <Link to="/admin/foods/new" className="btn-primary">+ Add New Food</Link>
       </div>
@@ -166,6 +169,7 @@ export function AdminFoods() {
               <div>
                 <h3 className="font-bold">{food.name}</h3>
                 <p className="text-primary font-semibold">{formatBDT(food.price)}</p>
+                <p className="text-xs text-neutral-500">{food.branchName}</p>
               </div>
             </div>
             <p className="text-sm text-neutral-600 mt-3">{food.description.slice(0, 90)}...</p>
@@ -201,7 +205,9 @@ export function AdminFoodForm() {
           description: food.description,
           price: food.price,
           category: food.category,
+          branchCode: food.branchCode || DEFAULT_BRANCH_CODE,
           image: food.image,
+          prepTimeMinutes: food.prepTimeMinutes || 25,
           available: food.available
         })
       } catch (error) {
@@ -249,7 +255,7 @@ export function AdminFoodForm() {
 
     try {
       setIsSubmitting(true)
-      const payload = { ...formData, price: Number(formData.price) }
+      const payload = { ...formData, price: Number(formData.price), prepTimeMinutes: Number(formData.prepTimeMinutes) }
       if (isEditMode) {
         await axiosInstance.put(`/foods/${foodId}`, payload)
       } else {
@@ -283,6 +289,14 @@ export function AdminFoodForm() {
             <option value="beverages">Beverages</option>
             <option value="sides">Sides</option>
           </select>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <select value={formData.branchCode} onChange={(e) => setFormData({ ...formData, branchCode: e.target.value })} className="input-field">
+            {BRANCHES.map((branch) => (
+              <option key={branch.code} value={branch.code}>{branch.name}</option>
+            ))}
+          </select>
+          <input type="number" min="5" max="120" placeholder="Prep time in minutes" value={formData.prepTimeMinutes} onChange={(e) => setFormData({ ...formData, prepTimeMinutes: e.target.value })} className="input-field" required />
         </div>
 
         <label className="flex items-center gap-2 text-sm text-neutral-700">

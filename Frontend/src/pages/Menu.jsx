@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { fetchFoodsStart, fetchFoodsSuccess, fetchFoodsFailure } from '../redux/slices/foodSlice'
 import FoodCard from '../components/FoodCard'
+import { BRANCHES, DEFAULT_BRANCH_CODE } from '../constants/business'
 
 const categories = [
   { id: 'all', name: 'All' },
@@ -30,6 +31,7 @@ function Menu() {
   const category = searchParams.get('category') || 'all'
   const search = searchParams.get('search') || ''
   const sort = searchParams.get('sort') || 'newest'
+  const branchCode = searchParams.get('branch') || DEFAULT_BRANCH_CODE
 
   useEffect(() => {
     const fetchFoods = async () => {
@@ -39,6 +41,7 @@ function Menu() {
           params: {
             ...(category !== 'all' && { category }),
             ...(search && { search }),
+            ...(branchCode && { branchCode }),
             sort
           }
         })
@@ -49,7 +52,7 @@ function Menu() {
     }
 
     fetchFoods()
-  }, [dispatch, category, search, sort])
+  }, [dispatch, category, search, sort, branchCode])
 
   const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams)
@@ -83,20 +86,34 @@ function Menu() {
       </div>
 
       <div className="card p-4 mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-2">
-          {categories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => updateParam('category', cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                category === cat.id
-                  ? 'bg-primary text-white'
-                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-              }`}
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm font-semibold text-neutral-600 mr-2">Branch:</label>
+            <select
+              value={branchCode}
+              onChange={(e) => updateParam('branch', e.target.value)}
+              className="input-field !w-auto !py-2"
             >
-              {cat.name}
-            </button>
-          ))}
+              {BRANCHES.map((branch) => (
+                <option key={branch.code} value={branch.code}>{branch.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {categories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => updateParam('category', cat.id)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  category === cat.id
+                    ? 'bg-primary text-white'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
