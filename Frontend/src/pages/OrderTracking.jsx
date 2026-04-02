@@ -75,6 +75,10 @@ function OrderTracking() {
               <p className="text-neutral-600 text-sm">Delivery Address</p>
               <p className="font-semibold text-sm">{order.deliveryAddress}</p>
             </div>
+            <div>
+              <p className="text-neutral-600 text-sm">Branch</p>
+              <p className="font-semibold text-sm">{order.branchName}</p>
+            </div>
           </div>
         </div>
 
@@ -147,7 +151,7 @@ function OrderTracking() {
             <div className="flex justify-between">
               <span className="text-neutral-600">Subtotal</span>
               <span className="font-semibold">
-                {formatBDT(order.totalAmount - order.deliveryCharges)}
+                {formatBDT(order.subtotalAmount || (order.totalAmount - order.deliveryCharges))}
               </span>
             </div>
             <div className="flex justify-between">
@@ -155,6 +159,14 @@ function OrderTracking() {
               <span className="font-semibold">
                 {order.deliveryCharges === 0 ? 'Free' : formatBDT(order.deliveryCharges)}
               </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-neutral-600">Service charge</span>
+              <span className="font-semibold">{formatBDT(order.serviceCharge || 0)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-neutral-600">VAT</span>
+              <span className="font-semibold">{formatBDT(order.vatAmount || 0)}</span>
             </div>
             <div className="flex justify-between border-t border-neutral-200 pt-3 mt-3">
               <span className="font-bold">Total</span>

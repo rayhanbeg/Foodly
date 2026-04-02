@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { BRANCHES, PAYMENT_METHODS } from '../constants/business.js';
 
 const orderSchema = new mongoose.Schema(
   {
@@ -28,6 +29,28 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide delivery address']
     },
+    branchCode: {
+      type: String,
+      required: [true, 'Please provide branch code'],
+      enum: BRANCHES.map((branch) => branch.code)
+    },
+    branchName: {
+      type: String,
+      required: [true, 'Please provide branch name']
+    },
+    subtotalAmount: {
+      type: Number,
+      required: true,
+      min: 0
+    },
+    serviceCharge: {
+      type: Number,
+      default: 0
+    },
+    vatAmount: {
+      type: Number,
+      default: 0
+    },
     totalAmount: {
       type: Number,
       required: true,
@@ -44,7 +67,7 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['credit_card', 'debit_card', 'upi', 'wallet'],
+      enum: PAYMENT_METHODS,
       required: true
     },
     paymentStatus: {

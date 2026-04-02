@@ -12,6 +12,8 @@ function FoodCard({ food }) {
       name: food.name,
       price: food.price,
       image: food.image,
+      branchCode: food.branchCode,
+      branchName: food.branchName,
       quantity: 1
     }))
   }
@@ -38,6 +40,9 @@ function FoodCard({ food }) {
 
         <p className="text-neutral-600 text-sm mb-3 line-clamp-2">
           {food.description}
+        </p>
+        <p className="text-xs text-neutral-500 mb-3">
+          {food.branchName} • Prep {food.prepTimeMinutes || 25} mins
         </p>
 
         <div className="flex items-center justify-between mb-4">
