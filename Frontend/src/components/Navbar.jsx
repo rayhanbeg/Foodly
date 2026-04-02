@@ -73,7 +73,7 @@ function Navbar() {
     <>
       {/* Top Navbar */}
       <nav className="sticky top-0 z-40 border-b border-orange-100 bg-white/90 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div className="container-fluid mx-auto px-4 py-3 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="font-display text-lg md:text-xl text-2xl font-extrabold tracking-tight text-primary flex items-center gap-2">
             <span className="text-lg md:text-xl lg:text-2xl">🍽️</span>
