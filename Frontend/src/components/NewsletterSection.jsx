@@ -1,76 +1,58 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import axios from 'axios';
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import axios from 'axios'
+void motion
 
 function NewsletterSection() {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
+    e.preventDefault()
+    setLoading(true)
+    setMessage('')
 
     try {
-      await axios.post('/api/newsletter/subscribe', { email });
-      setMessage('success');
-      setEmail('');
-      setTimeout(() => setMessage(''), 3000);
+      await axios.post('/api/newsletter/subscribe', { email })
+      setMessage('success')
+      setEmail('')
+      setTimeout(() => setMessage(''), 3000)
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Failed to subscribe');
-      setTimeout(() => setMessage(''), 3000);
+      setMessage(error.response?.data?.message || 'Failed to subscribe')
+      setTimeout(() => setMessage(''), 3000)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <section className="bg-gray-900 text-white section">
+    <section className="py-16 bg-neutral-900 text-white">
       <div className="container-fluid">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto text-center"
-        >
-          <h2 className="text-4xl font-bold mb-4">Get Latest Offers</h2>
-          <p className="text-gray-300 mb-8">
-            Subscribe to our newsletter and get exclusive deals, recipes, and food inspiration delivered to your inbox.
-          </p>
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto text-center">
+          <p className="text-xs tracking-[0.16em] text-amber-400 font-semibold">NEWSLETTER</p>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold">Join for updates and curated offers.</h2>
+          <p className="mt-4 text-neutral-300">Get early access to new menu drops and limited-time seasonal deals.</p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubmit} className="mt-8 flex flex-col sm:flex-row gap-3">
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="flex-1 px-6 py-3 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="flex-1 px-5 py-3 rounded-xl text-gray-900"
             />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-8 py-3 bg-amber-600 hover:bg-amber-700 rounded-md font-semibold transition-colors whitespace-nowrap"
-            >
+            <button type="submit" disabled={loading} className="px-7 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 font-semibold">
               {loading ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
 
-          {message && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className={message === 'success' ? 'text-green-400 mt-3' : 'text-red-400 mt-3'}
-            >
-              {message === 'success' 
-                ? '✓ Successfully subscribed!' 
-                : message}
-            </motion.p>
-          )}
+          {message && <p className={`mt-3 ${message === 'success' ? 'text-green-400' : 'text-red-400'}`}>{message === 'success' ? '✓ Successfully subscribed!' : message}</p>}
         </motion.div>
       </div>
     </section>
-  );
+  )
 }
+
 export default NewsletterSection

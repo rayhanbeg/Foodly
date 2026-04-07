@@ -1,69 +1,37 @@
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'
+void motion
+
+const services = [
+  { title: 'Fast dispatch', description: 'Orders are assigned instantly to nearby riders for shorter delivery windows.' },
+  { title: 'Secure checkout', description: 'Encrypted payments with trusted gateways and a straightforward refund flow.' },
+  { title: 'Dedicated support', description: 'Human support team available for updates, refunds, and issue resolution.' }
+]
 
 function ServicesSection() {
-  const services = [
-    {
-      icon: '🚚',
-      title: 'Fast Delivery',
-      description: 'Get your food delivered in 30-45 minutes with real-time tracking'
-    },
-    {
-      icon: '⭐',
-      title: 'Quality Guaranteed',
-      description: 'Carefully selected restaurants ensuring the highest food standards'
-    },
-    {
-      icon: '💰',
-      title: 'Great Prices',
-      description: 'Competitive pricing with special offers and discounts available'
-    },
-    {
-      icon: '🔒',
-      title: 'Secure Payments',
-      description: 'Safe and encrypted transactions with multiple payment options'
-    },
-    {
-      icon: '📱',
-      title: 'Easy to Use',
-      description: 'Simple and intuitive app interface for seamless ordering'
-    },
-    {
-      icon: '💬',
-      title: '24/7 Support',
-      description: 'Dedicated customer support available round the clock'
-    }
-  ];
-
   return (
     <section className="section container-fluid">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="section-header"
-      >
-        <h2 className="text-4xl font-bold mb-6 text-gray-900">Why Choose Foodly?</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          We provide the best food delivery experience with quality, speed, and excellent service
-        </p>
-      </motion.div>
+      <div className="max-w-2xl mb-8">
+        <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">SERVICES</p>
+        <h2 className="mt-2 text-3xl md:text-4xl font-bold text-neutral-900">Everything built for a premium ordering flow.</h2>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-3 gap-5">
         {services.map((service, index) => (
           <motion.div
-            key={index}
+            key={service.title}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="card card-border p-8"
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.08 }}
+            className="bg-white border border-neutral-200 rounded-2xl p-6"
           >
-            <div className="text-5xl mb-4">{service.icon}</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h3>
-            <p className="text-gray-600 leading-relaxed">{service.description}</p>
+            <h3 className="text-xl font-semibold text-neutral-900">{service.title}</h3>
+            <p className="mt-3 text-neutral-600">{service.description}</p>
           </motion.div>
         ))}
       </div>
     </section>
-  );
+  )
 }
+
 export default ServicesSection

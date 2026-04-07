@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+void motion;
 
 function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -56,12 +57,12 @@ function FAQ() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-4">
+          ><span className="text-orange-600 text-sm font-mono tracking-wider">// FAQ</span>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
               Frequently Asked Questions
             </h1>
-            <div className="w-16 h-0.5 bg-orange-500 mx-auto mb-6" />
-            <p className="text-gray-600 text-lg">
+            <div className="w-16 h-0.5 bg-amber-500 mx-auto mb-6" />
+            <p className="text-neutral-600 text-lg">
               Everything you need to know about Foodly.
             </p>
           </motion.div>
@@ -78,18 +79,18 @@ function FAQ() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.02 }}
-                className="border-b border-gray-100"
+                className="border-b border-neutral-200"
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                   className="w-full py-5 flex items-center justify-between text-left focus:outline-none group"
                 >
-                  <span className="text-base md:text-lg font-medium text-gray-900 pr-4 group-hover:text-orange-600 transition-colors">
+                  <span className="text-base md:text-lg font-medium text-neutral-900 pr-4 group-hover:text-amber-600 transition-colors">
                     {faq.question}
                   </span>
                   <span
-                    className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-gray-400 transition-all duration-200 ${
-                      openIndex === idx ? 'rotate-45 text-orange-500' : ''
+                    className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-neutral-400 transition-all duration-200 ${
+                      openIndex === idx ? 'rotate-45 text-amber-500' : ''
                     }`}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +107,7 @@ function FAQ() {
                       transition={{ duration: 0.2 }}
                       className="pb-5"
                     >
-                      <p className="text-gray-600 leading-relaxed text-sm md:text-base">{faq.answer}</p>
+                      <p className="text-neutral-600 leading-relaxed text-sm md:text-base">{faq.answer}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -117,13 +118,13 @@ function FAQ() {
       </section>
 
       {/* Minimal CTA */}
-      <section className="border-t border-gray-100 py-16 bg-white">
+      <section className="border-t border-neutral-200 py-16 bg-white">
         <div className="container mx-auto px-4 text-center max-w-2xl">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Still have questions?</h2>
-          <p className="text-gray-500 mb-6">We're here to help – just reach out.</p>
+          <h2 className="text-2xl font-semibold text-neutral-900 mb-2">Still have questions?</h2>
+          <p className="text-neutral-500 mb-6">We're here to help – just reach out.</p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition"
+            className="inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-neutral-800 transition"
           >
             Contact Support
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
