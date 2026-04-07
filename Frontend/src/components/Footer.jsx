@@ -28,14 +28,14 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/about" className="text-neutral-400 hover:text-primary transition-colors">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/contact" className="text-neutral-400 hover:text-primary transition-colors">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -45,24 +45,24 @@ function Footer() {
             <h4 className="font-semibold text-neutral-100 mb-4">Help</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/faq" className="text-neutral-400 hover:text-primary transition-colors">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/contact" className="text-neutral-400 hover:text-primary transition-colors">
                   Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/terms" className="text-neutral-400 hover:text-primary transition-colors">
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-neutral-400 hover:text-primary transition-colors">
+                <Link to="/privacy" className="text-neutral-400 hover:text-primary transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

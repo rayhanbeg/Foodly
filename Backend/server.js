@@ -6,6 +6,8 @@ import authRoutes from './routes/auth.js';
 import foodRoutes from './routes/foods.js';
 import orderRoutes from './routes/orders.js';
 import userRoutes from './routes/users.js';
+import contactRoutes from './routes/contact.js';
+import newsletterRoutes from './routes/newsletter.js';
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

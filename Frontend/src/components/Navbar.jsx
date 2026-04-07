@@ -84,6 +84,9 @@ function Navbar() {
           <div className="hidden lg:flex items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 p-1">
             <NavLink to="/" className={navItemClass}>Home</NavLink>
             <NavLink to="/menu" className={navItemClass}>Menu</NavLink>
+            <NavLink to="/about" className={navItemClass}>About</NavLink>
+            <NavLink to="/contact" className={navItemClass}>Contact</NavLink>
+            <NavLink to="/faq" className={navItemClass}>FAQ</NavLink>
             {isAuthenticated && user?.role === 'admin' && <NavLink to="/admin" className={navItemClass}>Admin</NavLink>}
           </div>
 

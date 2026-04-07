@@ -40,8 +40,6 @@ function FoodDetails() {
         name: selectedFood.name,
         price: selectedFood.price,
         image: selectedFood.image,
-        branchCode: selectedFood.branchCode,
-        branchName: selectedFood.branchName,
         quantity
       }))
       navigate('/cart')
@@ -116,7 +114,7 @@ function FoodDetails() {
             </span>
           </div>
           <p className="text-neutral-600 mb-6">
-            Prepared at <span className="font-semibold">{selectedFood.branchName}</span> • Estimated prep time {selectedFood.prepTimeMinutes || 25} mins
+            Estimated prep time <span className="font-semibold">{selectedFood.prepTimeMinutes || 25} mins</span>
           </p>
 
           <p className="text-neutral-700 text-lg mb-6">

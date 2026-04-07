@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { BRANCHES, DEFAULT_BRANCH_CODE, getBranchByCode } from '../constants/business.js';
 
 const foodSchema = new mongoose.Schema(
   {
@@ -24,17 +23,6 @@ const foodSchema = new mongoose.Schema(
       required: [true, 'Please provide a category'],
       enum: ['appetizers', 'mains', 'desserts', 'beverages', 'sides']
     },
-    branchCode: {
-      type: String,
-      required: [true, 'Please provide branch code'],
-      enum: BRANCHES.map((branch) => branch.code),
-      default: DEFAULT_BRANCH_CODE
-    },
-    branchName: {
-      type: String,
-      required: [true, 'Please provide branch name'],
-      default: getBranchByCode(DEFAULT_BRANCH_CODE)?.name
-    },
     prepTimeMinutes: {
       type: Number,
       min: 5,
@@ -49,6 +37,10 @@ const foodSchema = new mongoose.Schema(
       type: Number,
       min: 0,
       max: 5,
+      default: 0
+    },
+    reviewCount: {
+      type: Number,
       default: 0
     },
     reviews: [
@@ -70,15 +62,5 @@ const foodSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-foodSchema.pre('validate', function (next) {
-  if (this.branchCode) {
-    const branch = getBranchByCode(this.branchCode);
-    if (branch) {
-      this.branchName = branch.name;
-    }
-  }
-  next();
-});
 
 export default mongoose.model('Food', foodSchema);

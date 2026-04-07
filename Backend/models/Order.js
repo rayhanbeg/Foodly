@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import { BRANCHES, PAYMENT_METHODS } from '../constants/business.js';
+
+const PAYMENT_METHODS = ['cash_on_delivery', 'credit_card', 'debit_card', 'digital_wallet'];
+const ORDER_STATUSES = ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'];
 
 const orderSchema = new mongoose.Schema(
   {
@@ -29,15 +31,6 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide delivery address']
     },
-    branchCode: {
-      type: String,
-      required: [true, 'Please provide branch code'],
-      enum: BRANCHES.map((branch) => branch.code)
-    },
-    branchName: {
-      type: String,
-      required: [true, 'Please provide branch name']
-    },
     subtotalAmount: {
       type: Number,
       required: true,
@@ -58,11 +51,11 @@ const orderSchema = new mongoose.Schema(
     },
     deliveryCharges: {
       type: Number,
-      default: 0
+      default: 50
     },
     status: {
       type: String,
-      enum: ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'],
+      enum: ORDER_STATUSES,
       default: 'pending'
     },
     paymentMethod: {

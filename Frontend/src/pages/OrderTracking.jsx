@@ -75,10 +75,7 @@ function OrderTracking() {
               <p className="text-neutral-600 text-sm">Delivery Address</p>
               <p className="font-semibold text-sm">{order.deliveryAddress}</p>
             </div>
-            <div>
-              <p className="text-neutral-600 text-sm">Branch</p>
-              <p className="font-semibold text-sm">{order.branchName}</p>
-            </div>
+
           </div>
         </div>
 

@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../api/axiosInstance'
 import { formatBDT } from '../utils/currency'
-import { BRANCHES, DEFAULT_BRANCH_CODE } from '../constants/business'
 
 const initialFoodForm = {
   name: '',
   description: '',
   price: '',
   category: 'mains',
-  branchCode: DEFAULT_BRANCH_CODE,
   image: '',
   prepTimeMinutes: 25,
   available: true
@@ -168,8 +166,8 @@ export function AdminFoods() {
               <img src={food.image} alt={food.name} className="h-16 w-16 rounded-lg object-cover" />
               <div>
                 <h3 className="font-bold">{food.name}</h3>
-                <p className="text-primary font-semibold">{formatBDT(food.price)}</p>
-                <p className="text-xs text-neutral-500">{food.branchName}</p>
+                <p className="text-amber-600 font-semibold">{formatBDT(food.price)}</p>
+                <p className="text-xs text-neutral-500">{food.category}</p>
               </div>
             </div>
             <p className="text-sm text-neutral-600 mt-3">{food.description.slice(0, 90)}...</p>
@@ -205,7 +203,6 @@ export function AdminFoodForm() {
           description: food.description,
           price: food.price,
           category: food.category,
-          branchCode: food.branchCode || DEFAULT_BRANCH_CODE,
           image: food.image,
           prepTimeMinutes: food.prepTimeMinutes || 25,
           available: food.available
@@ -290,14 +287,7 @@ export function AdminFoodForm() {
             <option value="sides">Sides</option>
           </select>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <select value={formData.branchCode} onChange={(e) => setFormData({ ...formData, branchCode: e.target.value })} className="input-field">
-            {BRANCHES.map((branch) => (
-              <option key={branch.code} value={branch.code}>{branch.name}</option>
-            ))}
-          </select>
-          <input type="number" min="5" max="120" placeholder="Prep time in minutes" value={formData.prepTimeMinutes} onChange={(e) => setFormData({ ...formData, prepTimeMinutes: e.target.value })} className="input-field" required />
-        </div>
+        <input type="number" min="5" max="120" placeholder="Prep time in minutes" value={formData.prepTimeMinutes} onChange={(e) => setFormData({ ...formData, prepTimeMinutes: e.target.value })} className="input-field" required />
 
         <label className="flex items-center gap-2 text-sm text-neutral-700">
           <input type="checkbox" checked={formData.available} onChange={(e) => setFormData({ ...formData, available: e.target.checked })} />

@@ -6,11 +6,10 @@ import { clearCart } from '../redux/slices/cartSlice'
 import { createOrderStart, createOrderSuccess, createOrderFailure } from '../redux/slices/orderSlice'
 import { formatBDT } from '../utils/currency'
 import {
-  BRANCHES,
-  DEFAULT_BRANCH_CODE,
   SERVICE_CHARGE_RATE,
   VAT_RATE,
-  getBranchByCode
+  DELIVERY_CHARGE,
+  FREE_DELIVERY_THRESHOLD
 } from '../constants/business'
 
 function Checkout() {
@@ -23,17 +22,12 @@ function Checkout() {
   const [formData, setFormData] = useState({
     deliveryAddress: user?.address || '',
     paymentMethod: 'cash_on_delivery',
-    branchCode: DEFAULT_BRANCH_CODE,
     notes: ''
   })
 
-  const cartBranchCodes = [...new Set(items.map(item => item.branchCode).filter(Boolean))]
-  const hasMixedBranches = cartBranchCodes.length > 1
-  const selectedBranch = getBranchByCode(formData.branchCode) || getBranchByCode(DEFAULT_BRANCH_CODE)
-
   const serviceCharge = totalPrice * SERVICE_CHARGE_RATE
   const vatAmount = totalPrice * VAT_RATE
-  const deliveryCharges = totalPrice >= selectedBranch.freeDeliveryThreshold ? 0 : selectedBranch.deliveryCharge
+  const deliveryCharges = totalPrice >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE
   const finalTotal = totalPrice + serviceCharge + vatAmount + deliveryCharges
 
   const handleChange = (e) => {
@@ -97,23 +91,9 @@ function Checkout() {
                 placeholder="Enter your delivery address"
                 required
               />
-              <div className="mt-4">
-                <label className="block font-semibold mb-2">Select Branch</label>
-                <select
-                  name="branchCode"
-                  value={formData.branchCode}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                >
-                  {BRANCHES.map(branch => (
-                    <option key={branch.code} value={branch.code}>{branch.name}</option>
-                  ))}
-                </select>
-                <p className="text-xs text-neutral-500 mt-1">
-                  Delivery ETA from this branch: approximately {selectedBranch.estimatedDeliveryMinutes} mins.
-                </p>
-              </div>
+              <p className="text-xs text-neutral-500 mt-3">
+                Estimated delivery time: approximately 30-40 minutes from order confirmation.
+              </p>
             </div>
 
             {/* Payment Method */}
@@ -169,16 +149,11 @@ function Checkout() {
 
             <button
               type="submit"
-              disabled={creatingOrder || hasMixedBranches}
+              disabled={creatingOrder}
               className="w-full btn-primary py-3 text-lg font-semibold disabled:opacity-50"
             >
               {creatingOrder ? 'Processing...' : `Place Order - ${formatBDT(finalTotal)}`}
             </button>
-            {hasMixedBranches && (
-              <p className="text-sm text-red-500">
-                Your cart has dishes from multiple branches. Please keep items from a single branch for one order.
-              </p>
-            )}
           </form>
         </div>
 

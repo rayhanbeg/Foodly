@@ -10,6 +10,13 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import OrderTracking from './pages/OrderTracking'
 import UserProfile from './pages/UserProfile'
+import OrderHistory from './pages/OrderHistory'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import FAQ from './pages/FAQ'
+import Search from './pages/Search'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 import AdminDashboard, { AdminFoodForm, AdminFoods, AdminOrders, AdminUsers } from './pages/AdminDashboard'
 import NotFound from './pages/NotFound'
 
@@ -31,6 +38,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/food/:id" element={<FoodDetails />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} />
         <Route path="/register" element={isAuthenticated ? <Navigate to="/" replace /> : <Register />} />
 
@@ -41,6 +54,10 @@ function App() {
         <Route
           path="/checkout"
           element={<ProtectedRoute isAuthenticated={isAuthenticated}><Checkout /></ProtectedRoute>}
+        />
+        <Route
+          path="/orders"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><OrderHistory /></ProtectedRoute>}
         />
         <Route
           path="/orders/:id"

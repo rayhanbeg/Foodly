@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const highlights = [
   { label: 'Avg. delivery', value: '30 min', icon: '⏱️' },
   { label: 'Rating', value: '4.9 ★', icon: '⭐' },
-  { label: 'Our branches', value: '3', icon: '🏨' },
+  { label: 'Orders today', value: '1,500+', icon: '📦' },
 ];
 
 export default function HeroSection() {

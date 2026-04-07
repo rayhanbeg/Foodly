@@ -4,12 +4,11 @@ import Order from '../models/Order.js';
 import Food from '../models/Food.js';
 import { verifyToken, adminOnly } from '../middleware/auth.js';
 import {
-  BRANCHES,
-  DEFAULT_BRANCH_CODE,
   PAYMENT_METHODS,
   SERVICE_CHARGE_RATE,
   VAT_RATE,
-  getBranchByCode
+  DELIVERY_CHARGE,
+  FREE_DELIVERY_THRESHOLD
 } from '../constants/business.js';
 
 const router = express.Router();
@@ -21,7 +20,6 @@ router.post(
   [
     body('items').isArray().notEmpty().withMessage('Items array is required'),
     body('deliveryAddress').trim().notEmpty().withMessage('Delivery address is required'),
-    body('branchCode').optional().isIn(BRANCHES.map((branch) => branch.code)).withMessage('Invalid branch'),
     body('paymentMethod').isIn(PAYMENT_METHODS).withMessage('Invalid payment method')
   ],
   async (req, res) => {
@@ -31,11 +29,7 @@ router.post(
     }
 
     try {
-      const { items, deliveryAddress, paymentMethod, notes, branchCode = DEFAULT_BRANCH_CODE } = req.body;
-      const selectedBranch = getBranchByCode(branchCode);
-      if (!selectedBranch) {
-        return res.status(400).json({ message: 'Selected branch is invalid' });
-      }
+      const { items, deliveryAddress, paymentMethod, notes } = req.body;
 
       // Validate items and calculate total
       let subtotalAmount = 0;
@@ -48,11 +42,6 @@ router.post(
         }
         if (!food.available) {
           return res.status(400).json({ message: `${food.name} is currently unavailable` });
-        }
-        if ((food.branchCode || DEFAULT_BRANCH_CODE) !== branchCode) {
-          return res.status(400).json({
-            message: `All items must be from ${selectedBranch.name}. Remove dishes from other branches.`
-          });
         }
 
         const subtotal = food.price * item.quantity;
@@ -69,15 +58,13 @@ router.post(
 
       const serviceCharge = Number((subtotalAmount * SERVICE_CHARGE_RATE).toFixed(2));
       const vatAmount = Number((subtotalAmount * VAT_RATE).toFixed(2));
-      const deliveryCharges = subtotalAmount >= selectedBranch.freeDeliveryThreshold ? 0 : selectedBranch.deliveryCharge;
+      const deliveryCharges = subtotalAmount >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE;
       const totalAmount = Number((subtotalAmount + serviceCharge + vatAmount + deliveryCharges).toFixed(2));
 
       const order = new Order({
         userId: req.userId,
         items: processedItems,
         deliveryAddress,
-        branchCode: selectedBranch.code,
-        branchName: selectedBranch.name,
         subtotalAmount,
         serviceCharge,
         vatAmount,
@@ -85,7 +72,7 @@ router.post(
         deliveryCharges,
         paymentMethod,
         notes,
-        estimatedDeliveryTime: new Date(Date.now() + selectedBranch.estimatedDeliveryMinutes * 60000)
+        estimatedDeliveryTime: new Date(Date.now() + 40 * 60000)
       });
 
       await order.save();
