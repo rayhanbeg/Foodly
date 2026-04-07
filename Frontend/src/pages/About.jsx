@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+void motion;
 
 function About() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function About() {
     <div className="min-h-screen bg-white">
       {/* Hero – clean, text‑driven, no generic image */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-transparent" />
         <div className="container relative z-10 mx-auto px-6 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -54,11 +55,11 @@ function About() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl"
           >
-            <span className="text-orange-600 text-sm font-mono tracking-wider">// about</span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mt-4 leading-[1.1]">
+            <span className="text-amber-600 text-sm font-mono tracking-wider">// about</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-neutral-900 mt-4 leading-[1.1]">
               We deliver more<br />than just food.
             </h1>
-            <p className="text-xl text-gray-600 mt-6 leading-relaxed max-w-xl">
+            <p className="text-xl text-neutral-600 mt-6 leading-relaxed max-w-xl">
               Foodly was born from a simple idea: great food should feel effortless. 
               Since 2020, we've been connecting local kitchens with hungry neighbors — 
               faster, fresher, and with a whole lot of care.
@@ -68,7 +69,7 @@ function About() {
       </section>
 
       {/* Stats – clean, minimal, with subtle icons */}
-      <section ref={statsRef} className="py-12 border-t border-b border-gray-100">
+      <section ref={statsRef} className="py-12 border-t border-b border-neutral-200">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, idx) => (
@@ -79,9 +80,9 @@ function About() {
                 transition={{ delay: idx * 0.1, duration: 0.4 }}
                 className="text-center"
               >
-                <div className="text-3xl md:text-4xl font-black text-gray-900">{stat.value}</div>
-                <div className="text-sm uppercase tracking-wide text-gray-500 mt-1">{stat.label}</div>
-                <div className="text-xs text-gray-400">{stat.suffix}</div>
+                <div className="text-3xl md:text-4xl font-black text-neutral-900">{stat.value}</div>
+                <div className="text-sm uppercase tracking-wide text-neutral-500 mt-1">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.suffix}</div>
               </motion.div>
             ))}
           </div>
@@ -94,9 +95,9 @@ function About() {
           <div className="grid md:grid-cols-2 gap-16">
             <div>
               <div className="sticky top-32">
-                <div className="w-12 h-px bg-orange-500 mb-6" />
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Mission</h2>
-                <p className="text-gray-600 text-lg mt-4 leading-relaxed">
+                <div className="w-12 h-px bg-amber-500 mb-6" />
+                <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Mission</h2>
+                <p className="text-neutral-600 text-lg mt-4 leading-relaxed">
                   To make quality food accessible to everyone — by partnering with the best local kitchens 
                   and delivering with speed, transparency, and a smile.
                 </p>
@@ -104,9 +105,9 @@ function About() {
             </div>
             <div>
               <div className="sticky top-32">
-                <div className="w-12 h-px bg-orange-500 mb-6" />
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Vision</h2>
-                <p className="text-gray-600 text-lg mt-4 leading-relaxed">
+                <div className="w-12 h-px bg-amber-500 mb-6" />
+                <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Vision</h2>
+                <p className="text-neutral-600 text-lg mt-4 leading-relaxed">
                   To become the most loved food delivery brand — where every order feels like a gift, 
                   and every meal brings people together.
                 </p>
@@ -117,14 +118,14 @@ function About() {
       </section>
 
       {/* Timeline – brand journey */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-neutral-50">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Our journey</h2>
-            <p className="text-gray-500 mt-2">From a single kitchen to your doorstep</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Our journey</h2>
+            <p className="text-neutral-500 mt-2">From a single kitchen to your doorstep</p>
           </div>
           <div className="relative">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gray-300" />
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-neutral-300" />
             {milestones.map((item, idx) => (
               <motion.div
                 key={idx}
@@ -135,12 +136,12 @@ function About() {
               >
                 <div className="flex-1 md:text-right pl-10 md:pl-0">
                   <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition">
-                    <span className="text-orange-600 font-mono text-sm">{item.year}</span>
+                    <span className="text-amber-600 font-mono text-sm">{item.year}</span>
                     <h3 className="text-xl font-bold mt-1">{item.title}</h3>
-                    <p className="text-gray-600 mt-2">{item.description}</p>
+                    <p className="text-neutral-600 mt-2">{item.description}</p>
                   </div>
                 </div>
-                <div className="absolute left-0 md:left-1/2 w-8 h-8 bg-white border-2 border-orange-500 rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-bold text-orange-600">
+                <div className="absolute left-0 md:left-1/2 w-8 h-8 bg-white border-2 border-amber-500 rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center text-xs font-bold text-amber-600">
                   {idx + 1}
                 </div>
                 <div className="flex-1 hidden md:block" />
@@ -154,8 +155,8 @@ function About() {
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">What drives us</h2>
-            <p className="text-gray-500 mt-2">Four principles, one promise.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">What drives us</h2>
+            <p className="text-neutral-500 mt-2">Four principles, one promise.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -169,11 +170,11 @@ function About() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-lg transition-all hover:-translate-y-1"
+                className="bg-white border border-neutral-200 rounded-2xl p-6 hover:shadow-lg transition-all hover:-translate-y-1"
               >
                 <div className="text-3xl mb-4">{value.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900">{value.title}</h3>
-                <p className="text-gray-500 mt-2 text-sm">{value.desc}</p>
+                <h3 className="text-xl font-bold text-neutral-900">{value.title}</h3>
+                <p className="text-neutral-500 mt-2 text-sm">{value.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -181,11 +182,11 @@ function About() {
       </section>
 
       {/* Team – modern, clean cards with role & bio */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-neutral-50">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">The faces behind Foodly</h2>
-            <p className="text-gray-500 mt-2">Real people, real passion.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">The faces behind Foodly</h2>
+            <p className="text-neutral-500 mt-2">Real people, real passion.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {team.map((person, idx) => (
@@ -196,7 +197,7 @@ function About() {
                 transition={{ delay: idx * 0.1 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
               >
-                <div className="aspect-square overflow-hidden bg-gray-100">
+                <div className="aspect-square overflow-hidden bg-neutral-100">
                   <img
                     src={person.image}
                     alt={person.name}
@@ -204,9 +205,9 @@ function About() {
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900">{person.name}</h3>
-                  <p className="text-orange-600 text-sm font-medium mt-1">{person.role}</p>
-                  <p className="text-gray-500 text-sm mt-3">{person.bio}</p>
+                  <h3 className="text-xl font-bold text-neutral-900">{person.name}</h3>
+                  <p className="text-amber-600 text-sm font-medium mt-1">{person.role}</p>
+                  <p className="text-neutral-500 text-sm mt-3">{person.bio}</p>
                 </div>
               </motion.div>
             ))}
@@ -215,15 +216,15 @@ function About() {
       </section>
 
       {/* CTA – minimal, confident, no heavy background */}
-      <section className="py-24 border-t border-gray-100">
+      <section className="py-24 border-t border-neutral-200">
         <div className="container mx-auto px-6 max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Ready to taste the difference?</h2>
-          <p className="text-gray-500 text-lg mt-4 mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Ready to taste the difference?</h2>
+          <p className="text-neutral-500 text-lg mt-4 mb-8">
             Join thousands of happy customers — order now and get 20% off your first meal.
           </p>
           <button
             onClick={() => navigate('/menu')}
-            className="inline-flex items-center gap-2 bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition shadow-md hover:shadow-lg"
+            className="inline-flex items-center gap-2 bg-neutral-900 text-white px-8 py-3 rounded-full font-medium hover:bg-neutral-800 transition shadow-md hover:shadow-lg"
           >
             Explore menu
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

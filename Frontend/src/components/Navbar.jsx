@@ -73,7 +73,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 border-b border-orange-100 bg-white/90 backdrop-blur-md">
+      <nav className="sticky top-0 z-40 border-b border-amber-100 bg-white/90 backdrop-blur-md">
         <div className="container-fluid mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link to="/" className="font-display text-lg md:text-xl text-2xl font-extrabold tracking-tight text-primary flex items-center gap-2">
             <span className="text-lg md:text-xl lg:text-2xl">🍽️</span>
@@ -107,7 +107,7 @@ function Navbar() {
                   <span className="text-2xl">🛒</span>
                   {totalQuantity > 0 && <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center">{totalQuantity}</span>}
                 </Link>
-                <Link to="/profile" className="px-4 py-2 rounded-full border border-neutral-200 hover:border-orange-200 text-neutral-700 hover:text-primary transition-colors">
+                <Link to="/profile" className="px-4 py-2 rounded-full border border-neutral-200 hover:border-amber-200 text-neutral-700 hover:text-primary transition-colors">
                   {userFirstName || 'Account'}
                 </Link>
                 <button onClick={handleLogout} className="btn-outline !py-2">Logout</button>
@@ -142,6 +142,14 @@ function Navbar() {
                 <span>Login</span>
               </Link>
             )}
+          </div>
+        </div>
+
+        <div className="md:hidden border-t border-neutral-200/80">
+          <div className="container-fluid py-2 flex items-center gap-2 overflow-x-auto">
+            <NavLink to="/about" className="px-3 py-1.5 text-xs rounded-full bg-neutral-100 text-neutral-700 whitespace-nowrap">About</NavLink>
+            <NavLink to="/contact" className="px-3 py-1.5 text-xs rounded-full bg-neutral-100 text-neutral-700 whitespace-nowrap">Contact</NavLink>
+            <NavLink to="/faq" className="px-3 py-1.5 text-xs rounded-full bg-neutral-100 text-neutral-700 whitespace-nowrap">FAQ</NavLink>
           </div>
         </div>
       </nav>
