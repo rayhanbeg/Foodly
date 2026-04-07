@@ -73,9 +73,9 @@ function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 border-b border-amber-100 bg-white/90 backdrop-blur-md md:bg-white/90 bg-[#E17100]">
+      <nav className="sticky top-0 z-40 border-b border-amber-100 bg-white/90 backdrop-blur-md">
         <div className="container-fluid mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <Link to="/" className="font-display text-lg md:text-xl text-2xl font-extrabold tracking-tight text-white md:text-primary flex items-center gap-2">
+          <Link to="/" className="font-display text-lg md:text-xl text-2xl font-extrabold tracking-tight text-primary flex items-center gap-2">
             <span className="text-lg md:text-xl lg:text-2xl">🍽️</span>
             FOODLY
           </Link>
@@ -124,7 +124,7 @@ function Navbar() {
             {isAuthenticated ? (
               <Link
                 to="/profile"
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 border border-white/30 md:bg-neutral-50 md:border-neutral-200 text-sm font-medium text-white md:text-neutral-700 hover:bg-white/30 md:hover:bg-neutral-100 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-50 border border-neutral-200 text-sm font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -134,7 +134,7 @@ function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-[#E17100] text-sm font-medium hover:bg-white/90 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -145,20 +145,20 @@ function Navbar() {
           </div>
         </div>
 
-        <div className="md:hidden border-t border-white/25">
+        <div className="md:hidden border-t border-neutral-200/80">
           <div className="container-fluid py-2 flex items-center gap-2 overflow-x-auto">
-            <NavLink to="/about" className="px-3 py-1.5 text-xs rounded-full bg-white/20 text-white whitespace-nowrap">About</NavLink>
-            <NavLink to="/contact" className="px-3 py-1.5 text-xs rounded-full bg-white/20 text-white whitespace-nowrap">Contact</NavLink>
-            <NavLink to="/faq" className="px-3 py-1.5 text-xs rounded-full bg-white/20 text-white whitespace-nowrap">FAQ</NavLink>
+            <NavLink to="/about" className="px-3 py-1.5 text-xs rounded-full bg-amber-50 text-amber-700 border border-amber-100 whitespace-nowrap">About</NavLink>
+            <NavLink to="/contact" className="px-3 py-1.5 text-xs rounded-full bg-amber-50 text-amber-700 border border-amber-100 whitespace-nowrap">Contact</NavLink>
+            <NavLink to="/faq" className="px-3 py-1.5 text-xs rounded-full bg-amber-50 text-amber-700 border border-amber-100 whitespace-nowrap">FAQ</NavLink>
             {isAuthenticated ? (
               <NavLink
                 to={user?.role === 'admin' ? '/admin' : '/profile'}
-                className="px-3 py-1.5 text-xs rounded-full bg-white text-[#E17100] font-semibold whitespace-nowrap"
+                className="px-3 py-1.5 text-xs rounded-full bg-neutral-900 text-white font-semibold whitespace-nowrap"
               >
                 {user?.role === 'admin' ? 'Admin' : (userFirstName || 'My Account')}
               </NavLink>
             ) : (
-              <NavLink to="/login" className="px-3 py-1.5 text-xs rounded-full bg-white text-[#E17100] font-semibold whitespace-nowrap">Account</NavLink>
+              <NavLink to="/login" className="px-3 py-1.5 text-xs rounded-full bg-neutral-900 text-white font-semibold whitespace-nowrap">Account</NavLink>
             )}
           </div>
         </div>
