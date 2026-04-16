@@ -45,19 +45,25 @@ export default function HeroSection() {
             </p>
             <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-neutral-900">
               Clean flavors, fast delivery,
-              <span className="text-amber-600"> zero hassle.</span>
+              <span className="text-[#ffb400]"> zero hassle.</span>
             </h1>
             <p className="mt-5 text-neutral-600 max-w-xl mx-auto lg:mx-0">
               Discover chef-crafted meals with a polished ordering experience built for speed and consistency.
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3">
-              <Link to="/menu" className="bg-neutral-900 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-neutral-800 transition shadow-md">
-                Browse Menu
-              </Link>
-              <Link to="/register" className="border border-neutral-300 bg-white text-neutral-700 px-6 py-2.5 rounded-full text-sm font-medium hover:bg-neutral-50 transition">
-                Create Account
-              </Link>
+            <Link
+              to="/menu"
+              className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-full bg-[#ffb400] px-[26px] text-[15px] font-medium text-[#0f1724] transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb400] focus-visible:ring-offset-2"
+            >
+              Browse Menu
+            </Link>
+            <Link
+              to="/register"
+              className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-full border border-black/10 bg-white/70 px-[26px] text-[15px] font-medium text-[#0f1724] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:ring-offset-2"
+            >
+              Create Account
+            </Link>
             </div>
 
             {/* Stats cards */}
