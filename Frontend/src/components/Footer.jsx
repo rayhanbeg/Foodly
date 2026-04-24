@@ -7,7 +7,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="font-display text-2xl font-bold text-primary mb-4">FOODLY</h3>
+            <h3 className="font-display text-xl font-bold text-primary mb-4">FOODLY</h3>
             <p className="text-neutral-400">
               Your favorite food delivered right to your door. Fast, fresh, and delicious!
             </p>

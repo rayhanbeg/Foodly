@@ -52,17 +52,17 @@ function UserProfile() {
 
   return (
     <div className="container-fluid py-12">
-      <h1 className="font-display text-3xl font-bold mb-8">My Profile</h1>
+      <h1 className="font-display text-2xl font-bold mb-8">My Profile</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
         <div className="lg:col-span-1">
           <div className="card p-6 sticky top-24">
             <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center text-3xl text-white">
+              <div className="w-20 h-20 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center text-2xl text-white">
                 👤
               </div>
-              <h2 className="font-bold text-xl">{profile?.name}</h2>
+              <h2 className="font-bold text-lg">{profile?.name}</h2>
               <p className="text-neutral-600">{profile?.email}</p>
             </div>
 
@@ -87,7 +87,7 @@ function UserProfile() {
         <div className="lg:col-span-2">
           <div className="card p-8">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="font-bold text-2xl">Profile Settings</h2>
+              <h2 className="font-bold text-xl">Profile Settings</h2>
               {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
@@ -168,7 +168,7 @@ function UserProfile() {
 
           {/* Recent Orders */}
           <div className="card p-8 mt-8">
-            <h2 className="font-bold text-2xl mb-6">Recent Orders</h2>
+            <h2 className="font-bold text-xl mb-6">Recent Orders</h2>
 
             {orders.length === 0 ? (
               <div className="text-center py-8">

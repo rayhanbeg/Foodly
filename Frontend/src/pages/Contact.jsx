@@ -138,11 +138,11 @@ function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           ><span className="text-orange-600 text-sm font-mono tracking-wider">// Contact</span>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
               Let’s talk
             </h1>
             <div className="w-16 h-0.5 bg-amber-500 mx-auto mb-6" />
-            <p className="text-neutral-600 text-lg">
+            <p className="text-neutral-600 text-base">
               Have a question, feedback, or just want to say hello? We’d love to
               hear from you.
             </p>
@@ -199,7 +199,7 @@ function Contact() {
       <section className="pb-20 md:pb-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
           <div className="border-t border-neutral-200 pt-10">
-            <h2 className="text-xl font-semibold text-neutral-900 mb-6">
+            <h2 className="text-lg font-semibold text-neutral-900 mb-6">
               Send us a message
             </h2>
             <form onSubmit={handleSubmit} className="space-y-5">

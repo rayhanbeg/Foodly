@@ -64,14 +64,14 @@ export default function Navbar() {
         key: "home",
         to: "/",
         label: "Home",
-        icon: <PiHouse className="text-lg" />,
+        icon: <PiHouse className="text-base" />,
         end: true,
       },
       {
         key: "menu",
         to: "/menu",
         label: "Menu",
-        icon: <PiList className="text-lg" />,
+        icon: <PiList className="text-base" />,
         end: false,
       },
     ];
@@ -82,14 +82,14 @@ export default function Navbar() {
             key: "cart",
             to: "/cart",
             label: "Cart",
-            icon: <PiShoppingCartSimple className="text-lg" />,
+            icon: <PiShoppingCartSimple className="text-base" />,
             badge: totalQuantity > 0 ? totalQuantity : null,
           },
           {
             key: "profile",
             to: "/profile",
             label: "Profile",
-            icon: <PiUser className="text-lg" />,
+            icon: <PiUser className="text-base" />,
             end: false,
           },
         ]
@@ -98,14 +98,14 @@ export default function Navbar() {
             key: "login",
             to: "/login",
             label: "Login",
-            icon: <PiSignIn className="text-lg" />,
+            icon: <PiSignIn className="text-base" />,
             end: false,
           },
           {
             key: "register",
             to: "/register",
             label: "Sign Up",
-            icon: <PiUserPlus className="text-lg" />,
+            icon: <PiUserPlus className="text-base" />,
             end: false,
           },
         ];
@@ -116,7 +116,7 @@ export default function Navbar() {
       label: "Search",
       icon: (
         <div className="flex items-center justify-center w-12 h-12 -mt-4 bg-amber-500 rounded-full shadow-lg">
-          <PiMagnifyingGlass className="text-xl text-white" />
+          <PiMagnifyingGlass className="text-lg text-white" />
         </div>
       ),
       isSearch: true,
@@ -136,7 +136,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 gap-6">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 shrink-0">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffb400] text-lg font-bold text-[#0f1724]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffb400] text-base font-bold text-[#0f1724]">
                 🍽
               </span>
               <span className="hidden lg:block">
@@ -208,7 +208,7 @@ export default function Navbar() {
                     to="/cart"
                     className="relative p-2 text-neutral-700 hover:text-primary"
                   >
-                    <PiShoppingCartSimpleBold className="text-xl" />
+                    <PiShoppingCartSimpleBold className="text-lg" />
                     {totalQuantity > 0 && (
                       <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#ffb400] text-[10px] font-bold text-black">
                         {totalQuantity}
@@ -220,7 +220,7 @@ export default function Navbar() {
                     to="/profile"
                     className="flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-primary"
                   >
-                    <FaUserCircle className="text-lg" />
+                    <FaUserCircle className="text-base" />
                     <span className="hidden lg:inline">
                       {user?.name?.split(" ")[0] || "Account"}
                     </span>
@@ -265,7 +265,7 @@ export default function Navbar() {
         </Link>
         {isAuthenticated && (
           <Link to="/cart" className="relative p-1.5 text-neutral-700">
-            <PiShoppingCartSimpleBold className="text-xl" />
+            <PiShoppingCartSimpleBold className="text-lg" />
             {totalQuantity > 0 && (
               <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#ffb400] text-[10px] font-bold text-black">
                 {totalQuantity}

@@ -13,7 +13,7 @@ function Cart() {
   if (items.length === 0) {
     return (
       <div className="container-fluid py-16 text-center">
-        <h1 className="font-display text-3xl font-bold mb-4">Your Cart is Empty</h1>
+        <h1 className="font-display text-2xl font-bold mb-4">Your Cart is Empty</h1>
         <p className="text-neutral-600 mb-8">Start adding items to your cart</p>
         <Link to="/menu" className="btn-primary inline-block">
           Continue Shopping
@@ -24,7 +24,7 @@ function Cart() {
 
   return (
     <div className="container-fluid py-12">
-      <h1 className="font-display text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="font-display text-2xl font-bold mb-8">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -92,7 +92,7 @@ function Cart() {
         {/* Order Summary */}
         <div className="lg:col-span-1">
           <div className="card p-6 sticky top-24">
-            <h2 className="font-bold text-lg mb-6">Order Summary</h2>
+            <h2 className="font-bold text-base mb-6">Order Summary</h2>
 
             <div className="space-y-3 mb-6 pb-6 border-b border-neutral-200">
               <div className="flex justify-between">
@@ -112,9 +112,9 @@ function Cart() {
               )}
             </div>
 
-            <div className="flex justify-between mb-8 text-lg">
+            <div className="flex justify-between mb-8 text-base">
               <span className="font-bold">Total</span>
-              <span className="font-bold text-primary text-xl">{formatBDT(finalTotal)}</span>
+              <span className="font-bold text-primary text-lg">{formatBDT(finalTotal)}</span>
             </div>
 
             <button

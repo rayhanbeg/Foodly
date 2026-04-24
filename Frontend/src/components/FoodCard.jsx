@@ -33,7 +33,7 @@ function FoodCard({ food }) {
 
       <div className="p-4">
         <Link to={`/food/${food._id}`} className="hover:text-primary transition-colors">
-          <h3 className="font-display text-lg font-bold text-neutral-900 mb-2">
+          <h3 className="font-display text-base font-bold text-neutral-900 mb-2">
             {food.name}
           </h3>
         </Link>

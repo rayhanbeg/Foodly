@@ -51,7 +51,7 @@ function OrderTracking() {
       <div className="max-w-2xl mx-auto">
         {/* Order Header */}
         <div className="card p-8 mb-8">
-          <h1 className="font-display text-3xl font-bold mb-4">Order #{order._id.slice(-6)}</h1>
+          <h1 className="font-display text-2xl font-bold mb-4">Order #{order._id.slice(-6)}</h1>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-neutral-600 text-sm">Order Date</p>
@@ -61,7 +61,7 @@ function OrderTracking() {
             </div>
             <div>
               <p className="text-neutral-600 text-sm">Total Amount</p>
-              <p className="font-bold text-lg text-primary">
+              <p className="font-bold text-base text-primary">
                 {formatBDT(order.totalAmount)}
               </p>
             </div>
@@ -81,7 +81,7 @@ function OrderTracking() {
 
         {/* Order Status Timeline */}
         <div className="card p-8 mb-8">
-          <h2 className="font-bold text-lg mb-6">Order Status</h2>
+          <h2 className="font-bold text-base mb-6">Order Status</h2>
 
           <div className="space-y-6">
             {statusSteps.map((step, index) => (
@@ -125,7 +125,7 @@ function OrderTracking() {
 
         {/* Order Items */}
         <div className="card p-8 mb-8">
-          <h2 className="font-bold text-lg mb-6">Order Items</h2>
+          <h2 className="font-bold text-base mb-6">Order Items</h2>
           <div className="space-y-4">
             {order.items.map((item, idx) => (
               <div key={idx} className="flex justify-between items-center pb-4 border-b border-neutral-200 last:border-b-0">
@@ -143,7 +143,7 @@ function OrderTracking() {
 
         {/* Order Summary */}
         <div className="card p-8">
-          <h2 className="font-bold text-lg mb-6">Order Summary</h2>
+          <h2 className="font-bold text-base mb-6">Order Summary</h2>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-neutral-600">Subtotal</span>
@@ -167,7 +167,7 @@ function OrderTracking() {
             </div>
             <div className="flex justify-between border-t border-neutral-200 pt-3 mt-3">
               <span className="font-bold">Total</span>
-              <span className="font-bold text-lg text-primary">
+              <span className="font-bold text-base text-primary">
                 {formatBDT(order.totalAmount)}
               </span>
             </div>

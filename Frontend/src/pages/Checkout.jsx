@@ -73,7 +73,7 @@ function Checkout() {
 
   return (
     <div className="container-fluid py-12">
-      <h1 className="font-display text-3xl font-bold mb-8">Checkout</h1>
+      <h1 className="font-display text-2xl font-bold mb-8">Checkout</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Checkout Form */}
@@ -81,7 +81,7 @@ function Checkout() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Delivery Address */}
             <div className="card p-6">
-              <h2 className="font-bold text-lg mb-4">Delivery Address</h2>
+              <h2 className="font-bold text-base mb-4">Delivery Address</h2>
               <textarea
                 name="deliveryAddress"
                 value={formData.deliveryAddress}
@@ -98,7 +98,7 @@ function Checkout() {
 
             {/* Payment Method */}
             <div className="card p-6">
-              <h2 className="font-bold text-lg mb-4">Payment Method</h2>
+              <h2 className="font-bold text-base mb-4">Payment Method</h2>
               <div className="space-y-3">
                  <label className="flex items-center gap-3">
                   <input
@@ -119,7 +119,7 @@ function Checkout() {
 
             {/* Special Instructions */}
             <div className="card p-6">
-              <h2 className="font-bold text-lg mb-4">Special Instructions (Optional)</h2>
+              <h2 className="font-bold text-base mb-4">Special Instructions (Optional)</h2>
               <textarea
                 name="notes"
                 value={formData.notes}
@@ -132,7 +132,7 @@ function Checkout() {
 
             {/* Order Items Review */}
             <div className="card p-6">
-              <h2 className="font-bold text-lg mb-4">Order Review</h2>
+              <h2 className="font-bold text-base mb-4">Order Review</h2>
               <div className="space-y-3 mb-4">
                 {items.map(item => (
                   <div key={item.id} className="flex justify-between">
@@ -150,7 +150,7 @@ function Checkout() {
             <button
               type="submit"
               disabled={creatingOrder}
-              className="w-full btn-primary py-3 text-lg font-semibold disabled:opacity-50"
+              className="w-full btn-primary py-3 text-base font-semibold disabled:opacity-50"
             >
               {creatingOrder ? 'Processing...' : `Place Order - ${formatBDT(finalTotal)}`}
             </button>
@@ -160,7 +160,7 @@ function Checkout() {
         {/* Order Summary Sidebar */}
         <div className="lg:col-span-1">
           <div className="card p-6 sticky top-24">
-            <h2 className="font-bold text-lg mb-6">Order Summary</h2>
+            <h2 className="font-bold text-base mb-6">Order Summary</h2>
 
             <div className="space-y-4 mb-6 pb-6 border-b border-neutral-200">
               {items.map(item => (
@@ -196,7 +196,7 @@ function Checkout() {
 
             <div className="flex justify-between mb-6">
               <span className="font-bold">Total</span>
-              <span className="font-bold text-primary text-lg">{formatBDT(finalTotal)}</span>
+              <span className="font-bold text-primary text-base">{formatBDT(finalTotal)}</span>
             </div>
 
             <button

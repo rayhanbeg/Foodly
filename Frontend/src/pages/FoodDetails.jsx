@@ -109,7 +109,7 @@ function FoodDetails() {
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-neutral-400 mx-auto mb-4" />
-          <p className="text-neutral-600 text-lg">Food item not found</p>
+          <p className="text-neutral-600 text-base">Food item not found</p>
           <button onClick={() => navigate('/menu')} className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2.5 px-6 rounded-xl mt-6 transition-colors">
             Back to Menu
           </button>
@@ -190,7 +190,7 @@ function FoodDetails() {
             </div>
 
             {/* Title & Description */}
-            <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 leading-tight">
+            <h1 className="text-2xl md:text-3xl font-bold text-neutral-900 leading-tight">
               {selectedFood.name}
             </h1>
             <p className="mt-4 text-neutral-600 leading-relaxed">
@@ -201,7 +201,7 @@ function FoodDetails() {
             <div className="mt-6 flex items-center justify-between border-y border-neutral-100 py-5">
               <div>
                 <p className="text-sm text-neutral-500 mb-1">Price</p>
-                <p className="text-4xl font-bold text-neutral-900 tracking-tight">
+                <p className="text-3xl font-bold text-neutral-900 tracking-tight">
                   {formatBDT(selectedFood.price)}
                 </p>
               </div>
@@ -225,7 +225,7 @@ function FoodDetails() {
                 >
                   -
                 </button>
-                <span className="w-12 text-center text-xl font-semibold text-neutral-900">
+                <span className="w-12 text-center text-lg font-semibold text-neutral-900">
                   {quantity}
                 </span>
                 <button
@@ -242,7 +242,7 @@ function FoodDetails() {
             {selectedFood.available ? (
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3.5 rounded-xl mt-6 transition-colors flex items-center justify-center gap-2 text-lg"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3.5 rounded-xl mt-6 transition-colors flex items-center justify-center gap-2 text-base"
               >
                 <ShoppingCart className="w-5 h-5" />
                 Add to Cart • {formatBDT(selectedFood.price * quantity)}
@@ -259,7 +259,7 @@ function FoodDetails() {
         {/* Reviews Section */}
         <section className="mt-16 border-t border-neutral-200 pt-12">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900">
+            <h2 className="text-xl md:text-2xl font-bold text-neutral-900">
               Customer Reviews
             </h2>
             {!showReviewForm && (
@@ -276,7 +276,7 @@ function FoodDetails() {
           {showReviewForm && (
             <div className="overflow-hidden mb-8">
               <div className="bg-white rounded-2xl border border-neutral-200 p-6">
-                <h3 className="text-lg font-semibold text-neutral-900 mb-4">Share your experience</h3>
+                <h3 className="text-base font-semibold text-neutral-900 mb-4">Share your experience</h3>
                 <div className="space-y-5">
                   {/* Star Rating */}
                   <div>
