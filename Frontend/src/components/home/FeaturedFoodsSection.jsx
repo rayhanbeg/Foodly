@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import FoodCard from '../FoodCard'
+import SkeletonCard from '../SkeletonCard'
 void motion
 
 export default function FeaturedFoodsSection({ foods, isLoading }) {
@@ -10,7 +11,7 @@ export default function FeaturedFoodsSection({ foods, isLoading }) {
         <div className="flex items-end justify-between mb-8">
           <div>
             <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">FEATURED</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900">Popular this week</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-neutral-900">Popular this week</h2>
           </div>
           <Link to="/menu" className="hidden md:inline-flex text-neutral-900 font-semibold hover:text-amber-600">
             View all menu →
@@ -18,7 +19,11 @@ export default function FeaturedFoodsSection({ foods, isLoading }) {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-14 text-neutral-600">Loading foods...</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <SkeletonCard key={idx} />
+            ))}
+          </div>
         ) : (
           <motion.div
             initial="hidden"

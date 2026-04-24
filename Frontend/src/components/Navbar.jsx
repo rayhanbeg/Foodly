@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -121,7 +121,7 @@ export default function Navbar() {
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffb400] text-lg font-bold text-[#0f1724]">
                 🍽
               </span>
-              <span className="hidden lg:block">
+              <span className="hidden xl:block">
                 <span className="block text-base font-bold leading-none text-[#0f1724]">
                   FOODLY
                 </span>
@@ -132,12 +132,12 @@ export default function Navbar() {
             </Link>
 
             {/* Nav links */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1">
               <NavLink to="/" end className={desktopNavClass}>Home</NavLink>
               <NavLink to="/menu" className={desktopNavClass}>Menu</NavLink>
               <NavLink to="/about" className={desktopNavClass}>About</NavLink>
               <NavLink to="/contact" className={desktopNavClass}>Contact</NavLink>
-              <NavLink to="/faq" className={desktopNavClass}>FAQ</NavLink>
+              <NavLink to="/faq" className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900">FAQ</NavLink>
               {isAuthenticated && user?.role === "admin" && (
                 <NavLink to="/admin" className={desktopNavClass}>Admin</NavLink>
               )}
@@ -161,7 +161,7 @@ export default function Navbar() {
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Search dishes..."
-                    className="w-32 lg:w-48 bg-transparent text-sm text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
+                    className="w-24 lg:w-40 xl:w-48 bg-transparent text-sm text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
                   />
                 </div>
               </form>
@@ -179,7 +179,7 @@ export default function Navbar() {
 
                   <Link to="/profile" className="flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-primary">
                     <FaUserCircle className="text-lg" />
-                    <span className="hidden lg:inline">
+                    <span className="hidden xl:inline">
                       {user?.name?.split(" ")[0] || "Account"}
                     </span>
                   </Link>
@@ -189,14 +189,14 @@ export default function Navbar() {
                     className="flex items-center gap-1.5 rounded-md bg-neutral-900 px-3.5 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition"
                   >
                     <IoLogOutOutline className="text-base" />
-                    <span className="hidden lg:inline">Logout</span>
+                    <span className="hidden xl:inline">Logout</span>
                   </button>
                 </>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="text-sm font-medium text-neutral-700 hover:text-primary hidden lg:inline"
+                    className="text-sm font-medium text-neutral-700 hover:text-primary hidden xl:inline"
                   >
                     Login
                   </Link>

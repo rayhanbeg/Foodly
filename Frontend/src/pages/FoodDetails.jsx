@@ -190,7 +190,7 @@ function FoodDetails() {
             </div>
 
             {/* Title & Description */}
-            <h1 className="text-2xl md:text-3xl font-bold text-neutral-900 leading-tight">
+            <h1 className="text-xl md:text-2xl font-bold text-neutral-900 leading-tight">
               {selectedFood.name}
             </h1>
             <p className="mt-4 text-neutral-600 leading-relaxed">
@@ -201,7 +201,7 @@ function FoodDetails() {
             <div className="mt-6 flex items-center justify-between border-y border-neutral-100 py-5">
               <div>
                 <p className="text-sm text-neutral-500 mb-1">Price</p>
-                <p className="text-3xl font-bold text-neutral-900 tracking-tight">
+                <p className="text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
                   {formatBDT(selectedFood.price)}
                 </p>
               </div>
@@ -259,7 +259,7 @@ function FoodDetails() {
         {/* Reviews Section */}
         <section className="mt-16 border-t border-neutral-200 pt-12">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <h2 className="text-xl md:text-2xl font-bold text-neutral-900">
+            <h2 className="text-lg md:text-xl font-bold text-neutral-900">
               Customer Reviews
             </h2>
             {!showReviewForm && (

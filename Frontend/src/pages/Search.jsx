@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FoodCard from '../components/FoodCard';
 import axios from 'axios';
+void motion
 
 function Search() {
   const [searchParams] = useSearchParams();
@@ -43,7 +44,7 @@ function Search() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-3xl font-bold mb-2 text-gray-900">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900">
             Search Results
           </h1>
           {searchQuery && (

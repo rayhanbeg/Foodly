@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart, updateQuantity, clearCart } from '../redux/slices/cartSlice'
@@ -7,13 +8,47 @@ function Cart() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { items, totalPrice } = useSelector(state => state.cart)
+  const [showSkeleton, setShowSkeleton] = useState(true)
   const deliveryCharges = totalPrice > 500 ? 0 : 50
   const finalTotal = totalPrice + deliveryCharges
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSkeleton(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (showSkeleton) {
+    return (
+      <div className="container-fluid py-12">
+        <div className="h-8 w-48 animate-pulse rounded bg-neutral-200 mb-8" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 rounded-2xl border border-neutral-200 bg-white p-6 space-y-5">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} className="flex gap-4 pb-5 border-b border-neutral-100 last:border-0">
+                <div className="h-20 w-20 animate-pulse rounded-lg bg-neutral-200" />
+                <div className="flex-1 space-y-3">
+                  <div className="h-4 w-2/3 animate-pulse rounded bg-neutral-200" />
+                  <div className="h-3 w-1/3 animate-pulse rounded bg-neutral-100" />
+                  <div className="h-9 w-28 animate-pulse rounded bg-neutral-200" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl border border-neutral-200 bg-white p-6 space-y-4 h-fit">
+            <div className="h-5 w-1/2 animate-pulse rounded bg-neutral-200" />
+            <div className="h-3 w-full animate-pulse rounded bg-neutral-100" />
+            <div className="h-3 w-full animate-pulse rounded bg-neutral-100" />
+            <div className="h-10 w-full animate-pulse rounded bg-neutral-200 mt-4" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (items.length === 0) {
     return (
       <div className="container-fluid py-16 text-center">
-        <h1 className="font-display text-3xl font-bold mb-4">Your Cart is Empty</h1>
+        <h1 className="font-display text-2xl md:text-3xl font-bold mb-4">Your Cart is Empty</h1>
         <p className="text-neutral-600 mb-8">Start adding items to your cart</p>
         <Link to="/menu" className="btn-primary inline-block">
           Continue Shopping
@@ -24,7 +59,7 @@ function Cart() {
 
   return (
     <div className="container-fluid py-12">
-      <h1 className="font-display text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="font-display text-2xl md:text-3xl font-bold mb-8">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}

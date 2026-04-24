@@ -138,7 +138,7 @@ function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           ><span className="text-orange-600 text-sm font-mono tracking-wider">// Contact</span>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
               Let’s talk
             </h1>
             <div className="w-16 h-0.5 bg-amber-500 mx-auto mb-6" />

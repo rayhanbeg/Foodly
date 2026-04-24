@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+void motion
 
 function OrderHistory() {
   const [orders, setOrders] = useState([]);
@@ -69,7 +70,7 @@ function OrderHistory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-3xl font-bold mb-8 text-gray-900">Order History</h1>
+          <h1 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">Order History</h1>
 
           {/* Filter Buttons */}
           <div className="flex gap-3 mb-8 overflow-x-auto pb-2">

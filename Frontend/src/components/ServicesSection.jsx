@@ -12,7 +12,7 @@ function ServicesSection() {
     <section className="section container-fluid">
       <div className="max-w-2xl mb-8">
         <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">SERVICES</p>
-        <h2 className="mt-2 text-2xl md:text-3xl font-bold text-neutral-900">Everything built for a premium ordering flow.</h2>
+        <h2 className="mt-2 text-xl md:text-2xl font-bold text-neutral-900">Everything built for a premium ordering flow.</h2>
       </div>
 
       <div className="grid md:grid-cols-3 gap-5">
