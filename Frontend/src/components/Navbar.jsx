@@ -70,13 +70,10 @@ function Navbar() {
             badge: totalQuantity > 0 ? totalQuantity : null,
           },
           {
-            key: user?.role === "admin" ? "admin" : "profile",
-            to: user?.role === "admin" ? "/admin" : "/profile",
-            label: user?.role === "admin" ? "Admin" : "Profile",
-            icon:
-              user?.role === "admin"
-                ? "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                : "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+            key: "profile",
+            to: "/profile",
+            label: "Profile",
+            icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
             end: false,
           },
         ]
@@ -207,7 +204,7 @@ function Navbar() {
                   )}
                 </Link>
                 <Link
-                  to={user?.role === "admin" ? "/admin" : "/profile"}
+                  to="/profile"
                   className="inline-flex items-center px-3.5 py-2 text-sm font-medium text-[#0f1724] hover:text-black"
                 >
                   {user?.name?.split(" ")[0] || "Account"}
@@ -266,7 +263,7 @@ function Navbar() {
               {isAuthenticated ? (
                 <>
                   <Link
-                    to={user?.role === "user" ? "profile" : "profile"}
+                    to="/profile"
                     className="flex items-center gap-1 text-sm font-medium text-neutral-700"
                   >
                     <FaUserCircle className="text-xl" />

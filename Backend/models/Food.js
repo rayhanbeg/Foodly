@@ -43,6 +43,12 @@ const foodSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    tags: {
+      type: [String],
+      default: [],
+      set: (values = []) =>
+        [...new Set(values.map((value) => value.trim().toLowerCase()).filter(Boolean))]
+    },
     reviews: [
       {
         userId: mongoose.Schema.Types.ObjectId,
