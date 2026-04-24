@@ -1,83 +1,69 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-void motion
-
-const stats = [
-  { label: 'Avg. delivery', value: '28 min' },
-  { label: 'Happy customers', value: '22k+' },
-  { label: 'Top rating', value: '4.9/5' },
-];
 
 export default function HeroSection() {
   return (
-    <section className="bg-neutral-50 border-b border-neutral-200/70">
-      <div className="container-fluid mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        {/* Grid with responsive order */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          
-          {/* Image - appears first on mobile, second on desktop */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="order-1 lg:order-2 relative"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1400&auto=format&fit=crop&q=80"
-              alt="Fresh food bowl"
-              className="w-full h-64 sm:h-80 md:h-96 lg:h-[520px] object-cover rounded-2xl lg:rounded-3xl shadow-xl"
-            />
-            {/* Floating badge */}
-            <div className="absolute -bottom-5 left-4 right-4 lg:left-6 lg:right-auto bg-white border border-neutral-200 rounded-2xl p-3 lg:p-4 shadow-lg">
-              <p className="text-xs text-neutral-500">Today’s delivery slots</p>
-              <p className="text-base lg:text-lg font-semibold text-neutral-900">Open • 11:00 AM – 10:00 PM</p>
-            </div>
-          </motion.div>
+    <section className="relative border-b border-neutral-900/20 min-h-[45vh] sm:min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] flex items-center">
 
-          {/* Text content - appears second on mobile, first on desktop */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="order-2 lg:order-1 text-center lg:text-left"
-          >
-            <p className="inline-flex px-3 py-1 rounded-full bg-white border border-neutral-200 text-xs font-semibold tracking-wide text-neutral-600">
-              MODERN FOOD DELIVERY
-            </p>
-            <h1 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-neutral-900">
-              Clean flavors, fast delivery,
-              <span className="text-[#ffb400]"> zero hassle.</span>
-            </h1>
-            <p className="mt-5 text-sm md:text-base text-neutral-600 max-w-xl mx-auto lg:mx-0">
-              Discover chef-crafted meals with a polished ordering experience built for speed and consistency.
-            </p>
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src="https://res.cloudinary.com/dolcergq1/image/upload/v1777034460/ZgHRpaJ4TryrNg6xr6Sopvza6meJ2DtuT7kvwIY8-t_sfiqW9iJsD7BzqLU0FA82pvx-vsN9GetbgtW5ten8swUfoYMMRM-VEg0YYHOzOIeqne0VjeGefPQnqZRBuTsdbfInbzVOILXv6YUlo5_QK11DQ7HGnnOVprbSyLjP3vmIr2wh0t7rBsR7m-pDFOM9_j4g4zl.jpg"
+          alt="Fresh food"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
 
-            <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3">
+      {/* Content */}
+      <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+
+          {/* Badge */}
+          <p className="inline-block px-3 py-1 rounded-full border border-white/20 text-[10px] sm:text-xs font-medium text-white/80 bg-white/10 backdrop-blur-sm">
+            MODERN FOOD DELIVERY
+          </p>
+
+          {/* Heading */}
+          <h1 className="mt-4 font-semibold text-white leading-tight 
+            text-[clamp(22px,5vw,42px)] max-w-2xl mx-auto">
+            Clean flavors, fast delivery,
+            <span className="text-[#ffb400]"> zero hassle.</span>
+          </h1>
+
+          {/* Description */}
+          <p className="mt-4 text-white/80 
+            text-[13px] sm:text-sm md:text-base 
+            max-w-md sm:max-w-lg mx-auto leading-relaxed">
+            Chef-crafted meals with a smooth and fast ordering experience.
+          </p>
+
+          {/* Buttons */}
+          <div className="mt-6 flex justify-center items-center gap-3 w-full sm:w-auto">
+
             <Link
               to="/menu"
-              className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-full bg-[#ffb400] px-[26px] text-[15px] font-medium text-[#0f1724] transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffb400] focus-visible:ring-offset-2"
+              className="w-full sm:w-auto h-10 lg:h-14 px-6 rounded-full bg-[#ffb400] text-sm font-medium text-[#0f1724] flex items-center justify-center hover:brightness-95 transition"
             >
               Browse Menu
             </Link>
+
             <Link
               to="/register"
-              className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-full border border-black/10 bg-white/70 px-[26px] text-[15px] font-medium text-[#0f1724] transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:ring-offset-2"
+              className="w-full sm:w-auto h-10 lg:h-14 px-6 rounded-full border border-white/20 text-sm font-medium text-white flex items-center justify-center hover:bg-white/10 transition"
             >
               Create Account
             </Link>
-            </div>
 
-            {/* Stats cards */}
-            <div className="mt-10 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
-              {stats.map((item) => (
-                <div key={item.label} className="bg-white rounded-xl border border-neutral-200 p-3 text-center">
-                  <p className="text-base font-bold text-neutral-900">{item.value}</p>
-                  <p className="text-xs text-neutral-500">{item.label}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+          </div>
+
+        </motion.div>
+
       </div>
     </section>
   );
