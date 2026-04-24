@@ -34,18 +34,18 @@ function Cart() {
               {items.map(item => (
                 <div
                   key={item.id}
-                  className="flex gap-4 pb-6 border-b border-neutral-200 last:border-b-0"
+                  className="flex flex-col sm:flex-row gap-4 pb-6 border-b border-neutral-200 last:border-b-0"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-24 h-24 object-cover rounded-lg"
+                    className="w-full h-40 sm:w-24 sm:h-24 object-cover rounded-lg"
                   />
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-neutral-900">{item.name}</h3>
                     <p className="text-primary font-semibold">{formatBDT(item.price)}</p>
 
-                    <div className="flex items-center gap-4 mt-4">
+                    <div className="flex flex-wrap items-center gap-4 mt-4">
                       <div className="flex items-center gap-2 border border-neutral-300 rounded-lg">
                         <button
                           onClick={() => dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }))}
@@ -63,13 +63,13 @@ function Cart() {
                       </div>
                       <button
                         onClick={() => dispatch(removeFromCart(item.id))}
-                        className="ml-auto text-red-500 hover:text-red-700 font-semibold"
+                        className="sm:ml-auto text-red-500 hover:text-red-700 font-semibold"
                       >
                         Remove
                       </button>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right">
                     <p className="font-bold text-neutral-900">
                       {formatBDT(item.price * item.quantity)}
                     </p>
