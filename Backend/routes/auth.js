@@ -14,6 +14,16 @@ const generateToken = (user) => {
   );
 };
 
+const getAuthResponse = (user) => ({
+  token: generateToken(user),
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role
+  }
+});
+
 // Register Route
 router.post(
   '/register',
@@ -39,20 +49,10 @@ router.post(
       }
 
       // Create new user
-      user = new User({ name, email, phone, password });
+      user = new User({ name, email, phone, password, authProvider: 'local' });
       await user.save();
 
-      const token = generateToken(user);
-
-      res.status(201).json({
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
+      res.status(201).json(getAuthResponse(user));
     } catch (error) {
       console.error('Register error:', error);
       res.status(500).json({ message: 'Server error' });
@@ -77,8 +77,8 @@ router.post(
       const { email, password } = req.body;
 
       const user = await User.findOne({ email }).select('+password');
-      if (!user) {
-        return res.status(400).json({ message: 'Invalid credentials' });
+      if (!user || user.authProvider !== 'local') {
+        return res.status(400).json({ message: 'Please continue with Google login' });
       }
 
       const isPasswordValid = await user.matchPassword(password);
@@ -86,19 +86,64 @@ router.post(
         return res.status(400).json({ message: 'Invalid credentials' });
       }
 
-      const token = generateToken(user);
-
-      res.json({
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
+      res.json(getAuthResponse(user));
     } catch (error) {
       console.error('Login error:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  }
+);
+
+// Google Login / Register Route
+router.post(
+  '/google',
+  [body('credential').notEmpty().withMessage('Google credential is required')],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { credential } = req.body;
+      const verifyResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`);
+
+      if (!verifyResponse.ok) {
+        return res.status(401).json({ message: 'Invalid Google token' });
+      }
+
+      const payload = await verifyResponse.json();
+      const googleClientId = process.env.GOOGLE_CLIENT_ID;
+
+      if (googleClientId && payload.aud !== googleClientId) {
+        return res.status(401).json({ message: 'Google token client mismatch' });
+      }
+
+      if (!payload.email || payload.email_verified !== 'true') {
+        return res.status(401).json({ message: 'Google email is not verified' });
+      }
+
+      let user = await User.findOne({ email: payload.email });
+
+      if (!user) {
+        user = new User({
+          name: payload.name || payload.email.split('@')[0],
+          email: payload.email,
+          authProvider: 'google',
+          googleId: payload.sub
+        });
+      } else if (user.authProvider === 'local') {
+        return res.status(400).json({ message: 'This email is already registered with password. Please login using email/password.' });
+      } else {
+        user.googleId = payload.sub;
+        user.name = payload.name || user.name;
+      }
+
+      await user.save();
+
+      res.json(getAuthResponse(user));
+    } catch (error) {
+      console.error('Google auth error:', error);
       res.status(500).json({ message: 'Server error' });
     }
   }

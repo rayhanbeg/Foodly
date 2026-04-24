@@ -18,14 +18,34 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: [true, 'Please provide a phone number'],
-      match: [/^\d{10}$/, 'Phone number must be 10 digits']
+      required: function requiredPhone() {
+        return this.authProvider === 'local';
+      },
+      validate: {
+        validator: function validatePhone(value) {
+          if (!value) return true;
+          return /^\d{10}$/.test(value);
+        },
+        message: 'Phone number must be 10 digits'
+      }
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
+      required: function requiredPassword() {
+        return this.authProvider === 'local';
+      },
       minlength: 6,
       select: false
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local'
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true
     },
     address: {
       type: String,
@@ -42,7 +62,7 @@ const userSchema = new mongoose.Schema(
 
 // Hash password before saving
 userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+  if (!this.password || !this.isModified('password')) return;
 
   const salt = await bcryptjs.genSalt(10);
   this.password = await bcryptjs.hash(this.password, salt);
@@ -50,7 +70,8 @@ userSchema.pre('save', async function () {
 
 // Method to compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcryptjs.compare(enteredPassword, this.password);
+  if (!this.password) return false;
+  return bcryptjs.compare(enteredPassword, this.password);
 };
 
 export default mongoose.model('User', userSchema);
