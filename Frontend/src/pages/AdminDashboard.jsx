@@ -213,7 +213,9 @@ export function AdminFoods() {
     const fetchFoods = async () => {
       try {
         const response = await axiosInstance.get('/foods')
-        setFoods(response.data)
+        const payload = response.data
+        const foodsList = Array.isArray(payload) ? payload : Array.isArray(payload?.foods) ? payload.foods : []
+        setFoods(foodsList)
       } catch (error) {
         console.error('Failed to fetch foods:', error)
       } finally {
@@ -275,6 +277,7 @@ export function AdminFoodForm() {
   const [isLoading, setIsLoading] = useState(isEditMode)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [tagInput, setTagInput] = useState('')
 
   useEffect(() => {
     if (!isEditMode) return
@@ -353,6 +356,25 @@ export function AdminFoodForm() {
     }
   }
 
+  const addTag = (rawValue) => {
+    const value = rawValue.trim()
+    if (!value) return
+
+    setFormData((prev) => {
+      const alreadyExists = prev.tags.some((tag) => tag.toLowerCase() === value.toLowerCase())
+      if (alreadyExists) return prev
+      return { ...prev, tags: [...prev.tags, value] }
+    })
+    setTagInput('')
+  }
+
+  const removeTag = (tagToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tag) => tag !== tagToRemove)
+    }))
+  }
+
   if (isLoading) return <div className="text-center text-slate-500">Loading menu form...</div>
 
   return (
@@ -363,21 +385,48 @@ export function AdminFoodForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="text" placeholder="Menu item name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="input-field" required />
         <textarea placeholder="Menu description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="input-field" rows="4" required />
-        <input
-          type="text"
-          placeholder="Tags (comma separated: spicy, vegan, grilled)"
-          value={formData.tags.join(', ')}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              tags: e.target.value
-                .split(',')
-                .map((tag) => tag.trim())
-                .filter(Boolean)
-            })
-          }
-          className="input-field"
-        />
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700">Tags</label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Add tag (e.g. spicy, vegan)"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                  e.preventDefault()
+                  addTag(tagInput)
+                }
+              }}
+              className="input-field"
+            />
+            <button
+              type="button"
+              onClick={() => addTag(tagInput)}
+              className="btn-outline whitespace-nowrap"
+            >
+              Add Tag
+            </button>
+          </div>
+          {formData.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {formData.tags.map((tag) => (
+                <span key={tag} className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(tag)}
+                    className="text-slate-500 hover:text-rose-600 leading-none"
+                    aria-label={`Remove ${tag} tag`}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input type="number" min="0" placeholder="Price in BDT" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="input-field" required />
           <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="input-field">
