@@ -10,7 +10,6 @@ import contactRoutes from './routes/contact.js';
 import newsletterRoutes from './routes/newsletter.js';
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 

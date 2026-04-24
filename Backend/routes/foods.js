@@ -29,7 +29,8 @@ router.get('/', async (req, res) => {
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
+        { description: { $regex: search, $options: 'i' } },
+        { tags: { $regex: search, $options: 'i' } }
       ];
     }
 
@@ -89,7 +90,9 @@ router.post(
     body('price').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
     body('category').isIn(['appetizers', 'mains', 'desserts', 'beverages', 'sides']).withMessage('Invalid category'),
     body('prepTimeMinutes').optional().isInt({ min: 5, max: 120 }).withMessage('Prep time must be between 5 and 120 minutes'),
-    body('image').isURL().withMessage('Valid image URL is required')
+    body('image').isURL().withMessage('Valid image URL is required'),
+    body('tags').optional().isArray().withMessage('Tags must be an array'),
+    body('tags.*').optional().isString().trim().isLength({ min: 1, max: 30 }).withMessage('Each tag must be between 1 and 30 characters')
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -98,14 +101,15 @@ router.post(
     }
 
     try {
-      const { name, description, price, category, image, prepTimeMinutes } = req.body;
+      const { name, description, price, category, image, prepTimeMinutes, tags = [] } = req.body;
       const food = new Food({
         name,
         description,
         price,
         category,
         image,
-        prepTimeMinutes
+        prepTimeMinutes,
+        tags
       });
       await food.save();
       res.status(201).json(food);
@@ -117,9 +121,22 @@ router.post(
 );
 
 // Update food (Admin only)
-router.put('/:id', verifyToken, adminOnly, async (req, res) => {
+router.put(
+  '/:id',
+  verifyToken,
+  adminOnly,
+  [
+    body('tags').optional().isArray().withMessage('Tags must be an array'),
+    body('tags.*').optional().isString().trim().isLength({ min: 1, max: 30 }).withMessage('Each tag must be between 1 and 30 characters')
+  ],
+  async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
-    const { name, description, price, category, image, available, prepTimeMinutes } = req.body;
+    const { name, description, price, category, image, available, prepTimeMinutes, tags } = req.body;
     const food = await Food.findByIdAndUpdate(
       req.params.id,
       {
@@ -129,7 +146,8 @@ router.put('/:id', verifyToken, adminOnly, async (req, res) => {
         ...(category && { category }),
         ...(image && { image }),
         ...(available !== undefined && { available }),
-        ...(prepTimeMinutes !== undefined && { prepTimeMinutes })
+        ...(prepTimeMinutes !== undefined && { prepTimeMinutes }),
+        ...(tags !== undefined && { tags })
       },
       { new: true, runValidators: true }
     );

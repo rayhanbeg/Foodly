@@ -8,6 +8,7 @@ const initialFoodForm = {
   description: '',
   price: '',
   category: 'mains',
+  tags: [],
   image: '',
   prepTimeMinutes: 25,
   available: true
@@ -289,7 +290,8 @@ export function AdminFoodForm() {
           category: food.category,
           image: food.image,
           prepTimeMinutes: food.prepTimeMinutes || 25,
-          available: food.available
+          available: food.available,
+          tags: Array.isArray(food.tags) ? food.tags : []
         })
       } catch (error) {
         console.error('Failed to fetch food for edit:', error)
@@ -361,6 +363,21 @@ export function AdminFoodForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="text" placeholder="Menu item name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="input-field" required />
         <textarea placeholder="Menu description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="input-field" rows="4" required />
+        <input
+          type="text"
+          placeholder="Tags (comma separated: spicy, vegan, grilled)"
+          value={formData.tags.join(', ')}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              tags: e.target.value
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter(Boolean)
+            })
+          }
+          className="input-field"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input type="number" min="0" placeholder="Price in BDT" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="input-field" required />
           <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="input-field">
