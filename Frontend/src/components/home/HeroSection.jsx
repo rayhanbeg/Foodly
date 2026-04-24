@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+void motion
 
 const stats = [
   { label: 'Avg. delivery', value: '28 min' },
@@ -43,11 +44,11 @@ export default function HeroSection() {
             <p className="inline-flex px-3 py-1 rounded-full bg-white border border-neutral-200 text-xs font-semibold tracking-wide text-neutral-600">
               MODERN FOOD DELIVERY
             </p>
-            <h1 className="mt-4 text-3xl md:text-4xl lg:text-[2.75rem] font-bold leading-tight text-neutral-900">
+            <h1 className="mt-4 text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-neutral-900">
               Clean flavors, fast delivery,
               <span className="text-[#ffb400]"> zero hassle.</span>
             </h1>
-            <p className="mt-5 text-neutral-600 max-w-xl mx-auto lg:mx-0">
+            <p className="mt-5 text-sm md:text-base text-neutral-600 max-w-xl mx-auto lg:mx-0">
               Discover chef-crafted meals with a polished ordering experience built for speed and consistency.
             </p>
 

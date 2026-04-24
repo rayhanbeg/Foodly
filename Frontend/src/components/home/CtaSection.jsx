@@ -14,7 +14,7 @@ function CtaSection() {
         >
           <div className="max-w-xl">
             <p className="text-xs tracking-[0.16em] text-amber-400 font-semibold">READY TO ORDER</p>
-            <h2 className="mt-3 text-2xl md:text-3xl font-bold">Bring restaurant-quality meals to your door.</h2>
+            <h2 className="mt-3 text-xl md:text-2xl font-bold">Bring restaurant-quality meals to your door.</h2>
             <p className="mt-3 text-neutral-300">Experience a faster, cleaner and more professional food ordering journey with Foodly.</p>
           </div>
           <div className="flex gap-2 lg:gap-3">

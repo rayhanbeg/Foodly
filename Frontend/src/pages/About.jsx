@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
+void motion
 
 function About() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ function About() {
             transition={{ duration: 0.5 }}
           >
             <span className="text-orange-600 text-sm font-mono tracking-wider">// about</span>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mt-4 mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mt-4 mb-4">
               We deliver more than just food
             </h1>
             <div className="w-16 h-0.5 bg-orange-500 mx-auto mb-6" />
@@ -77,7 +78,7 @@ function About() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: idx * 0.1, duration: 0.4 }}
               >
-                <div className="text-2xl md:text-3xl font-black text-gray-900">{stat.value}</div>
+                <div className="text-xl md:text-2xl font-black text-gray-900">{stat.value}</div>
                 <div className="text-sm uppercase tracking-wide text-gray-500 mt-1">{stat.label}</div>
                 <div className="text-xs text-gray-400">{stat.suffix}</div>
               </motion.div>

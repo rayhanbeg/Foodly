@@ -5,13 +5,20 @@ function Footer() {
     <footer className="bg-neutral-900 text-neutral-50 mt-16">
       <div className="container-fluid py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Brand */}
-          <div>
-            <h3 className="font-display text-2xl font-bold text-primary mb-4">FOODLY</h3>
-            <p className="text-neutral-400">
-              Your favorite food delivered right to your door. Fast, fresh, and delicious!
-            </p>
-          </div>
+           {/* Logo */}
+            <Link to="/" className="flex items-center gap-3 shrink-0">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffb400] text-lg font-bold text-[#0f1724]">
+                🍽
+              </span>
+              <span className="">
+                <span className="block text-base font-bold leading-none text-white">
+                  FOODLY
+                </span>
+                <span className="block text-xs text-neutral-400">
+                  Fresh meals, delivered fast
+                </span>
+              </span>
+            </Link>
 
           {/* Quick Links */}
           <div>
@@ -86,7 +93,7 @@ function Footer() {
         {/* Divider */}
         <div className="border-t border-neutral-700 pt-8">
           <p className="text-center text-neutral-400">
-            &copy; 2024 FOODLY. All rights reserved.
+            &copy; 2026 FOODLY. All rights reserved.
           </p>
         </div>
       </div>

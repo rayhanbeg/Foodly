@@ -22,7 +22,7 @@ function WhyFoodlySection() {
       <div className="container-fluid">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-2xl">
           <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">WHY FOODLY</p>
-          <h2 className="mt-3 text-2xl md:text-4xl font-bold text-neutral-900">Minimal experience, professional standards.</h2>
+          <h2 className="mt-3 text-xl md:text-2xl font-bold text-neutral-900">Minimal experience, professional standards.</h2>
         </motion.div>
 
         <div className="mt-10 grid md:grid-cols-3 gap-5">

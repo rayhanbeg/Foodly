@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+void motion
 
 function Terms() {
   return (
@@ -9,7 +10,7 @@ function Terms() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-gray-900">Terms & Conditions</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-900">Terms & Conditions</h1>
           <div className="prose prose-base max-w-none text-gray-700 space-y-6">
             <div>
               <h2 className="text-xl font-bold text-gray-900 mb-4">1. Acceptance of Terms</h2>

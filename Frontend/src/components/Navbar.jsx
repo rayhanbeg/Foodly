@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -7,16 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 
 const desktopNavClass = ({ isActive }) =>
-   `inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md ${
+  `inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md ${
     isActive
       ? "bg-amber-50 text-amber-900"
       : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
   }`;
 
 const bottomNavItemClass = ({ isActive }) =>
-   `flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-all ${
+  `flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-all ${
     isActive
-      ? "text-amber-600 bg-amber-50 rounded-full px-2 py-1"
+      ? "text-amber-600 bg-amber-50 rounded-full"
       : "text-neutral-500 hover:text-neutral-700"
   }`;
 
@@ -113,7 +113,7 @@ export default function Navbar() {
   return (
     <>
       {/* ===== Desktop Navigation (solid, rectangular) ===== */}
-      <nav className="sticky top-0 z-40 hidden md:block bg-white border-b border-neutral-200 shadow-sm">
+      <nav className="sticky top-0 z-40 hidden md:block bg-white">
         <div className="max-w-[1280px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-6">
             {/* Logo */}
@@ -121,7 +121,7 @@ export default function Navbar() {
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ffb400] text-lg font-bold text-[#0f1724]">
                 🍽
               </span>
-              <span className="hidden lg:block">
+              <span className="hidden xl:block">
                 <span className="block text-base font-bold leading-none text-[#0f1724]">
                   FOODLY
                 </span>
@@ -132,28 +132,52 @@ export default function Navbar() {
             </Link>
 
             {/* Nav links */}
-            <div className="hidden lg:flex items-center gap-1">
-              <NavLink to="/" end className={desktopNavClass}>Home</NavLink>
-              <NavLink to="/menu" className={desktopNavClass}>Menu</NavLink>
-              <NavLink to="/about" className={desktopNavClass}>About</NavLink>
-              <NavLink to="/contact" className={desktopNavClass}>Contact</NavLink>
-              <NavLink to="/faq" className={desktopNavClass}>FAQ</NavLink>
+            <div className="hidden md:flex items-center gap-1">
+              <NavLink to="/" end className={desktopNavClass}>
+                Home
+              </NavLink>
+              <NavLink to="/menu" className={desktopNavClass}>
+                Menu
+              </NavLink>
+              <NavLink to="/about" className={desktopNavClass}>
+                About
+              </NavLink>
+              <NavLink to="/contact" className={desktopNavClass}>
+                Contact
+              </NavLink>
+              <NavLink
+                to="/faq"
+                className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-md text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+              >
+                FAQ
+              </NavLink>
               {isAuthenticated && user?.role === "admin" && (
-                <NavLink to="/admin" className={desktopNavClass}>Admin</NavLink>
+                <NavLink to="/admin" className={desktopNavClass}>
+                  Admin
+                </NavLink>
               )}
             </div>
 
             {/* Right side actions */}
             <div className="flex items-center gap-4 ml-auto">
               {/* Search bar */}
-              <form onSubmit={handleSearch} className="hidden md:flex items-center">
+              <form
+                onSubmit={handleSearch}
+                className="hidden md:flex items-center"
+              >
                 <div className="flex h-9 items-center gap-2 rounded-md border border-neutral-300 bg-neutral-50 px-3 text-sm">
                   <svg
                     className="h-4 w-4 shrink-0 text-neutral-400"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
                   </svg>
                   <input
                     id="desktop-search"
@@ -161,14 +185,17 @@ export default function Navbar() {
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Search dishes..."
-                    className="w-32 lg:w-48 bg-transparent text-sm text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
+                    className="w-24 lg:w-40 xl:w-48 bg-transparent text-sm text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
                   />
                 </div>
               </form>
 
               {isAuthenticated ? (
                 <>
-                  <Link to="/cart" className="relative p-2 text-neutral-700 hover:text-primary">
+                  <Link
+                    to="/cart"
+                    className="relative p-2 text-neutral-700 hover:text-primary"
+                  >
                     <PiShoppingCartSimpleBold className="text-xl" />
                     {totalQuantity > 0 && (
                       <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#ffb400] text-[10px] font-bold text-black">
@@ -177,9 +204,12 @@ export default function Navbar() {
                     )}
                   </Link>
 
-                  <Link to="/profile" className="flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-primary">
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-1.5 text-sm font-medium text-neutral-700 hover:text-primary"
+                  >
                     <FaUserCircle className="text-lg" />
-                    <span className="hidden lg:inline">
+                    <span className="hidden xl:inline">
                       {user?.name?.split(" ")[0] || "Account"}
                     </span>
                   </Link>
@@ -189,14 +219,14 @@ export default function Navbar() {
                     className="flex items-center gap-1.5 rounded-md bg-neutral-900 px-3.5 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition"
                   >
                     <IoLogOutOutline className="text-base" />
-                    <span className="hidden lg:inline">Logout</span>
+                    <span className="hidden xl:inline">Logout</span>
                   </button>
                 </>
               ) : (
                 <>
                   <Link
                     to="/login"
-                    className="text-sm font-medium text-neutral-700 hover:text-primary hidden lg:inline"
+                    className="text-sm font-medium text-neutral-700 hover:text-primary hidden xl:inline"
                   >
                     Login
                   </Link>
