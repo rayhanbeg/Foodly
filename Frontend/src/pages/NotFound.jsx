@@ -4,8 +4,8 @@ function NotFound() {
   return (
     <div className="container-fluid py-20 text-center">
       <div className="max-w-md mx-auto">
-        <h1 className="font-display text-6xl font-bold text-neutral-900 mb-4">404</h1>
-        <h2 className="font-display text-3xl font-bold text-neutral-800 mb-4">
+        <h1 className="font-display text-4xl font-bold text-neutral-900 mb-4">404</h1>
+        <h2 className="font-display text-2xl font-bold text-neutral-800 mb-4">
           Page Not Found
         </h2>
         <p className="text-neutral-600 mb-8">

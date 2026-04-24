@@ -69,7 +69,7 @@ function OrderHistory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl font-bold mb-8 text-gray-900">Order History</h1>
+          <h1 className="text-3xl font-bold mb-8 text-gray-900">Order History</h1>
 
           {/* Filter Buttons */}
           <div className="flex gap-3 mb-8 overflow-x-auto pb-2">
@@ -90,8 +90,8 @@ function OrderHistory() {
 
           {filteredOrders.length === 0 ? (
             <div className="card card-border p-12 text-center">
-              <div className="text-5xl mb-4">🛒</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">No orders found</h2>
+              <div className="text-4xl mb-4">🛒</div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">No orders found</h2>
               <p className="text-gray-600 mb-6">
                 {filter === 'all' 
                   ? "You haven't placed any orders yet. Start ordering now!" 
@@ -118,7 +118,7 @@ function OrderHistory() {
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-3">
-                        <h3 className="font-bold text-lg text-gray-900">
+                        <h3 className="font-bold text-base text-gray-900">
                           Order #{order._id.slice(-8).toUpperCase()}
                         </h3>
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
@@ -134,7 +134,7 @@ function OrderHistory() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-amber-600">
+                      <p className="text-xl font-bold text-amber-600">
                         ${order.totalAmount.toFixed(2)}
                       </p>
                       <button

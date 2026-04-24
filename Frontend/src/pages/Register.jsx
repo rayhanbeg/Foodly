@@ -37,7 +37,7 @@ function Register() {
     <div className="container-fluid py-16">
       <div className="max-w-md mx-auto">
         <div className="card p-8">
-          <h1 className="text-3xl font-bold text-center mb-8 text-neutral-900">Join FOODLY</h1>
+          <h1 className="text-2xl font-bold text-center mb-8 text-neutral-900">Join FOODLY</h1>
 
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

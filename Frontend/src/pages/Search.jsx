@@ -43,11 +43,11 @@ function Search() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl font-bold mb-2 text-gray-900">
+          <h1 className="text-3xl font-bold mb-2 text-gray-900">
             Search Results
           </h1>
           {searchQuery && (
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base text-gray-600 mb-8">
               Results for "<strong>{searchQuery}</strong>"
             </p>
           )}
@@ -100,8 +100,8 @@ function Search() {
             </div>
           ) : foods.length === 0 ? (
             <div className="card card-border p-12 text-center bg-white">
-              <div className="text-5xl mb-4">🔍</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">No items found</h2>
+              <div className="text-4xl mb-4">🔍</div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">No items found</h2>
               <p className="text-gray-600">
                 Try adjusting your search terms or filters to find what you&apos;re looking for.
               </p>

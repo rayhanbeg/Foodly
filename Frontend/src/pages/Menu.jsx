@@ -68,7 +68,7 @@ function Menu() {
     <div className="container-fluid py-12 md:py-16">
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-neutral-200 bg-white p-6 md:p-8 mb-8">
         <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">MENU</p>
-        <h1 className="mt-2 text-3xl md:text-5xl font-bold text-neutral-900">Find your next favorite meal.</h1>
+        <h1 className="mt-2 text-2xl md:text-4xl font-bold text-neutral-900">Find your next favorite meal.</h1>
         <p className="mt-3 text-neutral-600">Filter by category, search quickly, and sort exactly the way you want.</p>
 
         <div className="mt-6 grid lg:grid-cols-[1fr_auto] gap-4 items-center">
@@ -102,7 +102,7 @@ function Menu() {
       {isLoading ? (
         <div className="text-center py-12 text-neutral-600">Loading foods...</div>
       ) : foods.length === 0 ? (
-        <div className="text-center py-12 text-neutral-600 text-lg">No foods found. Try different filters.</div>
+        <div className="text-center py-12 text-neutral-600 text-base">No foods found. Try different filters.</div>
       ) : (
         <motion.div
           initial="hidden"

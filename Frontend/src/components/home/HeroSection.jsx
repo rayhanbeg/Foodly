@@ -29,7 +29,7 @@ export default function HeroSection() {
             {/* Floating badge */}
             <div className="absolute -bottom-5 left-4 right-4 lg:left-6 lg:right-auto bg-white border border-neutral-200 rounded-2xl p-3 lg:p-4 shadow-lg">
               <p className="text-xs text-neutral-500">Today’s delivery slots</p>
-              <p className="text-base lg:text-xl font-semibold text-neutral-900">Open • 11:00 AM – 10:00 PM</p>
+              <p className="text-base lg:text-lg font-semibold text-neutral-900">Open • 11:00 AM – 10:00 PM</p>
             </div>
           </motion.div>
 
@@ -43,7 +43,7 @@ export default function HeroSection() {
             <p className="inline-flex px-3 py-1 rounded-full bg-white border border-neutral-200 text-xs font-semibold tracking-wide text-neutral-600">
               MODERN FOOD DELIVERY
             </p>
-            <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-neutral-900">
+            <h1 className="mt-4 text-3xl md:text-4xl lg:text-[2.75rem] font-bold leading-tight text-neutral-900">
               Clean flavors, fast delivery,
               <span className="text-[#ffb400]"> zero hassle.</span>
             </h1>
@@ -70,7 +70,7 @@ export default function HeroSection() {
             <div className="mt-10 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
               {stats.map((item) => (
                 <div key={item.label} className="bg-white rounded-xl border border-neutral-200 p-3 text-center">
-                  <p className="text-lg font-bold text-neutral-900">{item.value}</p>
+                  <p className="text-base font-bold text-neutral-900">{item.value}</p>
                   <p className="text-xs text-neutral-500">{item.label}</p>
                 </div>
               ))}

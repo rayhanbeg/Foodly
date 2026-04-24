@@ -10,7 +10,7 @@ export default function FeaturedFoodsSection({ foods, isLoading }) {
         <div className="flex items-end justify-between mb-8">
           <div>
             <p className="text-xs tracking-[0.16em] text-amber-600 font-semibold">FEATURED</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900">Popular this week</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900">Popular this week</h2>
           </div>
           <Link to="/menu" className="hidden md:inline-flex text-neutral-900 font-semibold hover:text-amber-600">
             View all menu →

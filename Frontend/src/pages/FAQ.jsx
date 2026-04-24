@@ -58,11 +58,11 @@ function FAQ() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           ><span className="text-orange-600 text-sm font-mono tracking-wider">// FAQ</span>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mt-4 mb-4">
               Frequently Asked Questions
             </h1>
             <div className="w-16 h-0.5 bg-amber-500 mx-auto mb-6" />
-            <p className="text-neutral-600 text-lg">
+            <p className="text-neutral-600 text-base">
               Everything you need to know about Foodly.
             </p>
           </motion.div>
@@ -85,7 +85,7 @@ function FAQ() {
                   onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                   className="w-full py-5 flex items-center justify-between text-left focus:outline-none group"
                 >
-                  <span className="text-base md:text-lg font-medium text-neutral-900 pr-4 group-hover:text-amber-600 transition-colors">
+                  <span className="text-base md:text-base font-medium text-neutral-900 pr-4 group-hover:text-amber-600 transition-colors">
                     {faq.question}
                   </span>
                   <span
@@ -120,7 +120,7 @@ function FAQ() {
       {/* Minimal CTA */}
       <section className="border-t border-neutral-200 py-16 bg-white">
         <div className="container mx-auto px-4 text-center max-w-2xl">
-          <h2 className="text-2xl font-semibold text-neutral-900 mb-2">Still have questions?</h2>
+          <h2 className="text-xl font-semibold text-neutral-900 mb-2">Still have questions?</h2>
           <p className="text-neutral-500 mb-6">We're here to help – just reach out.</p>
           <a
             href="/contact"

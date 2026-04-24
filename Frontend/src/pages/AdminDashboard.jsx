@@ -39,7 +39,7 @@ function AdminDashboard() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-slate-300 mb-2">Foodly Admin Suite</p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">Restaurant Operations Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">Restaurant Operations Dashboard</h1>
             <p className="text-slate-200 mt-2 max-w-3xl">Track orders, manage the menu, and supervise customers from one professional control center.</p>
           </div>
           <Link to="/admin/foods/new" className="inline-flex items-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-400 px-5 py-3 font-semibold text-slate-900 shadow-lg transition-colors">
@@ -78,7 +78,7 @@ function QuickStatCard({ title, value, helper }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
       <p className="text-xs uppercase tracking-[0.18em] text-slate-500">{title}</p>
-      <p className="text-2xl font-bold text-slate-900 mt-2">{value}</p>
+      <p className="text-xl font-bold text-slate-900 mt-2">{value}</p>
       <p className="text-sm text-slate-500 mt-1">{helper}</p>
     </div>
   )
@@ -143,7 +143,7 @@ export function AdminOrders() {
     <div className="card p-6 border border-slate-200 shadow-lg shadow-slate-200/60 rounded-2xl">
       <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
         <div>
-          <h2 className="font-bold text-2xl text-slate-900">Order Operations</h2>
+          <h2 className="font-bold text-xl text-slate-900">Order Operations</h2>
           <p className="text-sm text-slate-500 mt-1">Monitor and update the complete restaurant order lifecycle.</p>
         </div>
       </div>
@@ -200,7 +200,7 @@ function SummaryChip({ label, value }) {
   return (
     <div className="rounded-xl bg-slate-50 border border-slate-200 p-3">
       <p className="text-xs uppercase tracking-[0.14em] text-slate-500">{label}</p>
-      <p className="text-lg font-bold text-slate-900 mt-2">{value}</p>
+      <p className="text-base font-bold text-slate-900 mt-2">{value}</p>
     </div>
   )
 }
@@ -241,7 +241,7 @@ export function AdminFoods() {
     <div className="card p-6 border border-slate-200 shadow-lg shadow-slate-200/60 rounded-2xl">
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
-          <h2 className="font-bold text-2xl text-slate-900">Menu Management</h2>
+          <h2 className="font-bold text-xl text-slate-900">Menu Management</h2>
           <p className="text-sm text-slate-500 mt-1">Curate dish details, pricing, and availability from one view.</p>
         </div>
         <Link to="/admin/foods/new" className="btn-primary">Add Menu Item</Link>
@@ -379,7 +379,7 @@ export function AdminFoodForm() {
 
   return (
     <div className="card p-6 border border-slate-200 shadow-lg shadow-slate-200/60 rounded-2xl">
-      <h2 className="font-bold text-2xl text-slate-900 mb-2">{isEditMode ? 'Edit Menu Item' : 'Create Menu Item'}</h2>
+      <h2 className="font-bold text-xl text-slate-900 mb-2">{isEditMode ? 'Edit Menu Item' : 'Create Menu Item'}</h2>
       <p className="text-sm text-slate-500 mb-6">Maintain consistent, guest-friendly menu data for your restaurant storefront.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -485,7 +485,7 @@ export function AdminUsers() {
 
   return (
     <div className="card p-6 border border-slate-200 shadow-lg shadow-slate-200/60 rounded-2xl">
-      <h2 className="font-bold text-2xl mb-2 text-slate-900">User Directory</h2>
+      <h2 className="font-bold text-xl mb-2 text-slate-900">User Directory</h2>
       <p className="text-sm text-slate-500 mb-6">View customer and team account details in a secure, organized layout.</p>
       <div className="overflow-x-auto rounded-xl border border-slate-200">
         <table className="w-full text-sm">
