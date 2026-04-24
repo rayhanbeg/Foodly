@@ -12,7 +12,7 @@ export default function HeroSection() {
           alt="Fresh food"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       {/* Content */}
