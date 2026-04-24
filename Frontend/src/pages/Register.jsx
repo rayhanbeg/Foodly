@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { registerStart, registerSuccess, registerFailure } from '../redux/slices/authSlice'
+import GoogleAuthButton from '../components/GoogleAuthButton'
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -32,6 +33,22 @@ function Register() {
       dispatch(registerFailure(err.response?.data?.message || 'Registration failed'))
     }
   }
+
+  const handleGoogleSuccess = useCallback(async (credential) => {
+    dispatch(registerStart())
+
+    try {
+      const response = await axiosInstance.post('/auth/google', { credential })
+      dispatch(registerSuccess(response.data))
+      navigate('/')
+    } catch (err) {
+      dispatch(registerFailure(err.response?.data?.message || 'Google sign-up failed'))
+    }
+  }, [dispatch, navigate])
+
+  const handleGoogleError = useCallback((message) => {
+    dispatch(registerFailure(message || 'Google sign-up failed'))
+  }, [dispatch])
 
   return (
     <div className="container-fluid py-16">
@@ -111,6 +128,14 @@ function Register() {
               {isLoading ? 'Creating account...' : 'Sign Up'}
             </button>
           </form>
+
+          <div className="my-6 flex items-center gap-3">
+            <div className="h-px flex-1 bg-neutral-200" />
+            <span className="text-sm text-neutral-500">OR</span>
+            <div className="h-px flex-1 bg-neutral-200" />
+          </div>
+
+          <GoogleAuthButton onSuccess={handleGoogleSuccess} onError={handleGoogleError} text="signup_with" />
 
           <p className="text-center text-neutral-600 mt-6">
             Already have an account?{' '}

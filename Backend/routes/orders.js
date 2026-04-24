@@ -2,6 +2,7 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import Order from '../models/Order.js';
 import Food from '../models/Food.js';
+import User from '../models/User.js';
 import { verifyToken, adminOnly } from '../middleware/auth.js';
 import {
   PAYMENT_METHODS,
@@ -20,6 +21,7 @@ router.post(
   [
     body('items').isArray().notEmpty().withMessage('Items array is required'),
     body('deliveryAddress').trim().notEmpty().withMessage('Delivery address is required'),
+    body('phone').matches(/^\d{10}$/).withMessage('Phone number must be 10 digits'),
     body('paymentMethod').isIn(PAYMENT_METHODS).withMessage('Invalid payment method')
   ],
   async (req, res) => {
@@ -29,7 +31,7 @@ router.post(
     }
 
     try {
-      const { items, deliveryAddress, paymentMethod, notes } = req.body;
+      const { items, deliveryAddress, paymentMethod, phone, notes } = req.body;
 
       // Validate items and calculate total
       let subtotalAmount = 0;
@@ -60,6 +62,15 @@ router.post(
       const vatAmount = Number((subtotalAmount * VAT_RATE).toFixed(2));
       const deliveryCharges = subtotalAmount >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_CHARGE;
       const totalAmount = Number((subtotalAmount + serviceCharge + vatAmount + deliveryCharges).toFixed(2));
+
+      await User.findByIdAndUpdate(
+        req.userId,
+        {
+          phone,
+          address: deliveryAddress
+        },
+        { runValidators: true }
+      );
 
       const order = new Order({
         userId: req.userId,

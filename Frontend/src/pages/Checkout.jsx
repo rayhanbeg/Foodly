@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '../api/axiosInstance'
 import { clearCart } from '../redux/slices/cartSlice'
+import { updateStoredUser } from '../redux/slices/authSlice'
 import { createOrderStart, createOrderSuccess, createOrderFailure } from '../redux/slices/orderSlice'
 import { formatBDT } from '../utils/currency'
 import {
@@ -20,10 +21,13 @@ function Checkout() {
   const { creatingOrder } = useSelector(state => state.order)
 
   const [formData, setFormData] = useState({
+    phone: user?.phone || '',
     deliveryAddress: user?.address || '',
     paymentMethod: 'cash_on_delivery',
     notes: ''
   })
+
+  const phoneMissing = !user?.phone
 
   const serviceCharge = totalPrice * SERVICE_CHARGE_RATE
   const vatAmount = totalPrice * VAT_RATE
@@ -50,6 +54,7 @@ function Checkout() {
 
       const response = await axiosInstance.post('/orders', orderData)
       dispatch(createOrderSuccess(response.data))
+      dispatch(updateStoredUser({ phone: formData.phone, address: formData.deliveryAddress }))
       dispatch(clearCart())
       navigate(`/orders/${response.data._id}`)
     } catch (error) {
@@ -79,19 +84,45 @@ function Checkout() {
         {/* Checkout Form */}
         <div className="lg:col-span-2">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Delivery Address */}
-            <div className="card p-6">
-              <h2 className="font-bold text-base mb-4">Delivery Address</h2>
-              <textarea
-                name="deliveryAddress"
-                value={formData.deliveryAddress}
-                onChange={handleChange}
-                className="input-field"
-                rows="4"
-                placeholder="Enter your delivery address"
-                required
-              />
-              <p className="text-xs text-neutral-500 mt-3">
+            {/* Contact + Delivery Address */}
+            <div className="card p-6 space-y-4">
+              <h2 className="font-bold text-base">Contact & Delivery</h2>
+
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="input-field"
+                  placeholder="Enter 10 digit phone number"
+                  pattern="[0-9]{10}"
+                  required
+                />
+                <p className="text-xs text-neutral-500 mt-2">
+                  {phoneMissing ? 'Please add your phone number to continue checkout.' : 'Your saved phone number is pre-filled. You can update it if needed.'}
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  Delivery Address *
+                </label>
+                <textarea
+                  name="deliveryAddress"
+                  value={formData.deliveryAddress}
+                  onChange={handleChange}
+                  className="input-field"
+                  rows="4"
+                  placeholder="Enter your delivery address"
+                  required
+                />
+              </div>
+
+              <p className="text-xs text-neutral-500">
                 Estimated delivery time: approximately 30-40 minutes from order confirmation.
               </p>
             </div>
