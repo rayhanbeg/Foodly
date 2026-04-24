@@ -213,7 +213,9 @@ export function AdminFoods() {
     const fetchFoods = async () => {
       try {
         const response = await axiosInstance.get('/foods')
-        setFoods(response.data)
+        const payload = response.data
+        const foodItems = Array.isArray(payload) ? payload : payload?.foods
+        setFoods(Array.isArray(foodItems) ? foodItems : [])
       } catch (error) {
         console.error('Failed to fetch foods:', error)
       } finally {
