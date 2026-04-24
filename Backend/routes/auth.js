@@ -20,6 +20,8 @@ const getAuthResponse = (user) => ({
     id: user._id,
     name: user.name,
     email: user.email,
+    phone: user.phone || '',
+    address: user.address || '',
     role: user.role
   }
 });
@@ -42,13 +44,11 @@ router.post(
     try {
       const { name, email, phone, password } = req.body;
 
-      // Check if user exists
       let user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({ message: 'User already exists' });
       }
 
-      // Create new user
       user = new User({ name, email, phone, password, authProvider: 'local' });
       await user.save();
 
@@ -77,7 +77,11 @@ router.post(
       const { email, password } = req.body;
 
       const user = await User.findOne({ email }).select('+password');
-      if (!user || user.authProvider !== 'local') {
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+      }
+
+      if (!user.password) {
         return res.status(400).json({ message: 'Please continue with Google login' });
       }
 
@@ -132,8 +136,6 @@ router.post(
           authProvider: 'google',
           googleId: payload.sub
         });
-      } else if (user.authProvider === 'local') {
-        return res.status(400).json({ message: 'This email is already registered with password. Please login using email/password.' });
       } else {
         user.googleId = payload.sub;
         user.name = payload.name || user.name;
