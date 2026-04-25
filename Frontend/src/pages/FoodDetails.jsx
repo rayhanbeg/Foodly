@@ -13,7 +13,7 @@ function FoodDetails() {
   const dispatch = useDispatch()
   const [quantity, setQuantity] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
-  const [imageError, setImageError] = useState(false)
+  const [imageErrors, setImageErrors] = useState({})
   const selectedFood = useSelector(state => state.food.selectedFood)
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
   const [reviewData, setReviewData] = useState({ rating: 5, comment: '' })
@@ -28,7 +28,7 @@ function FoodDetails() {
         setIsLoading(true)
         const response = await axiosInstance.get(`/foods/${id}`)
         dispatch(setSelectedFood(response.data))
-        setImageError(false)
+        setImageErrors({})
       } catch (error) {
         console.error('Failed to fetch food:', error)
         navigate('/menu')
@@ -38,6 +38,19 @@ function FoodDetails() {
     }
     fetchFood()
   }, [id, dispatch, navigate])
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.customElements?.get('swiper-container')) return
+
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js'
+    script.async = true
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const handleAddToCart = () => {
     if (!selectedFood) return
@@ -122,6 +135,9 @@ function FoodDetails() {
     (selectedFood.reviews?.length > 0
       ? selectedFood.reviews.reduce((sum, r) => sum + r.rating, 0) / selectedFood.reviews.length
       : 0)
+  const imageGallery = Array.isArray(selectedFood.images) && selectedFood.images.length > 0
+    ? selectedFood.images
+    : [selectedFood.image].filter(Boolean)
 
   return (
     <div className="min-h-screen bg-white">
@@ -141,12 +157,25 @@ function FoodDetails() {
           <div className="flex justify-center items-start">
             <div className="relative w-full max-w-lg mx-auto lg:mx-0">
               <div className="relative rounded-2xl overflow-hidden bg-neutral-100 shadow-sm">
-                <img
-                  src={imageError ? '/placeholder-food.jpg' : selectedFood.image}
-                  alt={selectedFood.name}
-                  className="w-full aspect-[4/3] object-cover"
-                  onError={() => setImageError(true)}
-                />
+                <swiper-container
+                  slides-per-view="1"
+                  space-between="12"
+                  navigation="true"
+                  pagination="true"
+                  loop={imageGallery.length > 1}
+                  className="block w-full"
+                >
+                  {imageGallery.map((image, idx) => (
+                    <swiper-slide key={`${image}-${idx}`}>
+                      <img
+                        src={imageErrors[idx] ? '/placeholder-food.jpg' : image}
+                        alt={`${selectedFood.name} - image ${idx + 1}`}
+                        className="w-full aspect-[4/3] object-cover"
+                        onError={() => setImageErrors((prev) => ({ ...prev, [idx]: true }))}
+                      />
+                    </swiper-slide>
+                  ))}
+                </swiper-container>
                 {/* Availability Badge */}
                 {selectedFood.available ? (
                   <div className="absolute top-4 left-4 bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">

@@ -10,6 +10,7 @@ const initialFoodForm = {
   category: 'mains',
   tags: [],
   image: '',
+  images: [],
   prepTimeMinutes: 25,
   available: true
 }
@@ -278,6 +279,7 @@ export function AdminFoodForm() {
   const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [tagInput, setTagInput] = useState('')
+  const [imageUrlInput, setImageUrlInput] = useState('')
 
   useEffect(() => {
     if (!isEditMode) return
@@ -292,6 +294,7 @@ export function AdminFoodForm() {
           price: food.price,
           category: food.category,
           image: food.image,
+          images: Array.isArray(food.images) && food.images.length > 0 ? food.images : (food.image ? [food.image] : []),
           prepTimeMinutes: food.prepTimeMinutes || 25,
           available: food.available,
           tags: Array.isArray(food.tags) ? food.tags : []
@@ -307,41 +310,69 @@ export function AdminFoodForm() {
     fetchFood()
   }, [foodId, isEditMode, navigate])
 
+  const readFileAsDataURL = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result)
+      reader.onerror = () => reject(new Error(`Failed to read ${file.name}`))
+      reader.readAsDataURL(file)
+    })
+
   const handleImageUpload = async (event) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file.')
+    const files = Array.from(event.target.files || [])
+    if (!files.length) return
+
+    const invalidFile = files.find((file) => !file.type.startsWith('image/'))
+    if (invalidFile) {
+      alert(`"${invalidFile.name}" is not a valid image file.`)
       return
     }
 
-    const reader = new FileReader()
-    reader.onloadend = async () => {
-      try {
-        setIsUploadingImage(true)
-        const response = await axiosInstance.post('/foods/upload', { imageData: reader.result })
-        setFormData(prev => ({ ...prev, image: response.data.url }))
-      } catch (error) {
-        console.error('Failed to upload image:', error)
-        alert(error.response?.data?.message || 'Image upload failed')
-      } finally {
-        setIsUploadingImage(false)
-      }
-    }
+    try {
+      setIsUploadingImage(true)
+      const uploadedUrls = []
 
-    reader.readAsDataURL(file)
+      for (const file of files) {
+        const imageData = await readFileAsDataURL(file)
+        const response = await axiosInstance.post('/foods/upload', { imageData })
+        if (response.data?.url) {
+          uploadedUrls.push(response.data.url)
+        }
+      }
+
+      setFormData((prev) => {
+        const updatedImages = [...new Set([...(prev.images || []), ...uploadedUrls])]
+        return {
+          ...prev,
+          image: updatedImages[0] || '',
+          images: updatedImages
+        }
+      })
+      event.target.value = ''
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+      alert(error.response?.data?.message || 'Image upload failed')
+    } finally {
+      setIsUploadingImage(false)
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!formData.image) {
-      alert('Please upload a food image first.')
+    if (!formData.images?.length) {
+      alert('Please upload at least one food image first.')
       return
     }
 
     try {
       setIsSubmitting(true)
-      const payload = { ...formData, price: Number(formData.price), prepTimeMinutes: Number(formData.prepTimeMinutes) }
+      const payload = {
+        ...formData,
+        image: formData.images[0],
+        images: formData.images,
+        price: Number(formData.price),
+        prepTimeMinutes: Number(formData.prepTimeMinutes)
+      }
       if (isEditMode) {
         await axiosInstance.put(`/foods/${foodId}`, payload)
       } else {
@@ -373,6 +404,39 @@ export function AdminFoodForm() {
       ...prev,
       tags: prev.tags.filter((tag) => tag !== tagToRemove)
     }))
+  }
+
+  const removeImage = (imageToRemove) => {
+    setFormData((prev) => {
+      const updatedImages = (prev.images || []).filter((img) => img !== imageToRemove)
+      return {
+        ...prev,
+        images: updatedImages,
+        image: updatedImages[0] || ''
+      }
+    })
+  }
+
+  const addImageByUrl = () => {
+    const sanitizedUrl = imageUrlInput.trim()
+    if (!sanitizedUrl) return
+
+    try {
+      new URL(sanitizedUrl)
+    } catch {
+      alert('Please enter a valid image URL.')
+      return
+    }
+
+    setFormData((prev) => {
+      const updatedImages = [...new Set([...(prev.images || []), sanitizedUrl])]
+      return {
+        ...prev,
+        image: updatedImages[0] || '',
+        images: updatedImages
+      }
+    })
+    setImageUrlInput('')
   }
 
   if (isLoading) return <div className="text-center text-slate-500">Loading menu form...</div>
@@ -444,11 +508,61 @@ export function AdminFoodForm() {
           Menu item is currently available for ordering
         </label>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-slate-700">Menu image</label>
-          <input type="file" accept="image/*" onChange={handleImageUpload} className="input-field" />
-          {isUploadingImage && <p className="text-sm text-amber-600">Uploading image to Cloudinary...</p>}
-          {formData.image && <img src={formData.image} alt="Preview" className="h-28 w-28 object-cover rounded-lg border border-slate-200" />}
+        <div className="space-y-3 rounded-xl border border-slate-200 p-4 bg-slate-50/60">
+          <div>
+            <label className="block text-sm font-semibold text-slate-800">Menu gallery images</label>
+            <p className="text-xs text-slate-500 mt-1">Upload multiple images at once or add trusted image URLs. The first image is used as the cover.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label className="flex items-center justify-center rounded-lg border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 cursor-pointer hover:border-amber-400 hover:text-amber-600 transition-colors">
+              <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
+              Select image files
+            </label>
+
+            <div className="flex gap-2">
+              <input
+                type="url"
+                placeholder="https://example.com/food-image.jpg"
+                value={imageUrlInput}
+                onChange={(e) => setImageUrlInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    addImageByUrl()
+                  }
+                }}
+                className="input-field"
+              />
+              <button type="button" onClick={addImageByUrl} className="btn-outline whitespace-nowrap">
+                Add URL
+              </button>
+            </div>
+          </div>
+
+          {isUploadingImage && <p className="text-sm text-amber-600">Uploading selected images to Cloudinary...</p>}
+          {formData.images?.length > 0 && (
+            <div className="flex flex-wrap gap-3">
+              {formData.images.map((img, index) => (
+                <div key={img} className="relative">
+                  <img src={img} alt={`Preview ${index + 1}`} className="h-28 w-28 object-cover rounded-lg border border-slate-200" />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(img)}
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-rose-500 text-white text-sm leading-none"
+                    aria-label={`Remove image ${index + 1}`}
+                  >
+                    ×
+                  </button>
+                  {index === 0 && (
+                    <span className="absolute left-2 bottom-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white">
+                      Cover
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-3">

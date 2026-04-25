@@ -91,6 +91,8 @@ router.post(
     body('category').isIn(['appetizers', 'mains', 'desserts', 'beverages', 'sides']).withMessage('Invalid category'),
     body('prepTimeMinutes').optional().isInt({ min: 5, max: 120 }).withMessage('Prep time must be between 5 and 120 minutes'),
     body('image').isURL().withMessage('Valid image URL is required'),
+    body('images').optional().isArray({ min: 1 }).withMessage('Images must be a non-empty array'),
+    body('images.*').optional().isURL().withMessage('Each image must be a valid URL'),
     body('tags').optional().isArray().withMessage('Tags must be an array'),
     body('tags.*').optional().isString().trim().isLength({ min: 1, max: 30 }).withMessage('Each tag must be between 1 and 30 characters')
   ],
@@ -101,13 +103,15 @@ router.post(
     }
 
     try {
-      const { name, description, price, category, image, prepTimeMinutes, tags = [] } = req.body;
+      const { name, description, price, category, image, images, prepTimeMinutes, tags = [] } = req.body;
+      const normalizedImages = Array.isArray(images) && images.length > 0 ? images : [image];
       const food = new Food({
         name,
         description,
         price,
         category,
-        image,
+        image: normalizedImages[0],
+        images: normalizedImages,
         prepTimeMinutes,
         tags
       });
@@ -127,7 +131,9 @@ router.put(
   adminOnly,
   [
     body('tags').optional().isArray().withMessage('Tags must be an array'),
-    body('tags.*').optional().isString().trim().isLength({ min: 1, max: 30 }).withMessage('Each tag must be between 1 and 30 characters')
+    body('tags.*').optional().isString().trim().isLength({ min: 1, max: 30 }).withMessage('Each tag must be between 1 and 30 characters'),
+    body('images').optional().isArray({ min: 1 }).withMessage('Images must be a non-empty array'),
+    body('images.*').optional().isURL().withMessage('Each image must be a valid URL')
   ],
   async (req, res) => {
   const errors = validationResult(req);
@@ -136,7 +142,8 @@ router.put(
   }
 
   try {
-    const { name, description, price, category, image, available, prepTimeMinutes, tags } = req.body;
+    const { name, description, price, category, image, images, available, prepTimeMinutes, tags } = req.body;
+    const normalizedImages = Array.isArray(images) && images.length > 0 ? images : undefined;
     const food = await Food.findByIdAndUpdate(
       req.params.id,
       {
@@ -145,6 +152,7 @@ router.put(
         ...(price !== undefined && { price }),
         ...(category && { category }),
         ...(image && { image }),
+        ...(normalizedImages && { images: normalizedImages, image: normalizedImages[0] }),
         ...(available !== undefined && { available }),
         ...(prepTimeMinutes !== undefined && { prepTimeMinutes }),
         ...(tags !== undefined && { tags })
