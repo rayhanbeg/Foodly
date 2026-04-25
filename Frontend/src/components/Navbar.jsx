@@ -302,30 +302,6 @@ export default function Navbar() {
               )}
             </div>
           </div>
-
-          {/* Small Navigation Buttons */}
-          <div className="flex items-center justify-center gap-2">
-            <NavLink
-              to="/about"
-              className="px-3 py-1 text-[11px] font-medium text-neutral-600 bg-neutral-100 rounded-full hover:bg-neutral-200 transition"
-            >
-              About
-            </NavLink>
-
-            <NavLink
-              to="/contact"
-              className="px-3 py-1 text-[11px] font-medium text-neutral-600 bg-neutral-100 rounded-full hover:bg-neutral-200 transition"
-            >
-              Contact
-            </NavLink>
-
-            <NavLink
-              to="/faq"
-              className="px-3 py-1 text-[11px] font-medium text-neutral-600 bg-neutral-100 rounded-full hover:bg-neutral-200 transition"
-            >
-              FAQ
-            </NavLink>
-          </div>
         </div>
       </nav>
 
