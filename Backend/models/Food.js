@@ -33,6 +33,10 @@ const foodSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide an image URL']
     },
+    images: {
+      type: [String],
+      default: []
+    },
     rating: {
       type: Number,
       min: 0,
@@ -68,5 +72,20 @@ const foodSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+foodSchema.pre('validate', function normalizeImageFields(next) {
+  const validImages = Array.isArray(this.images)
+    ? [...new Set(this.images.map((img) => (typeof img === 'string' ? img.trim() : '')).filter(Boolean))]
+    : [];
+
+  if (validImages.length > 0) {
+    this.images = validImages;
+    this.image = validImages[0];
+  } else if (this.image) {
+    this.images = [this.image];
+  }
+
+  next();
+});
 
 export default mongoose.model('Food', foodSchema);

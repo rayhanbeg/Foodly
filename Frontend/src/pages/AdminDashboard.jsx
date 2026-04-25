@@ -10,6 +10,7 @@ const initialFoodForm = {
   category: 'mains',
   tags: [],
   image: '',
+  images: [],
   prepTimeMinutes: 25,
   available: true
 }
@@ -292,6 +293,7 @@ export function AdminFoodForm() {
           price: food.price,
           category: food.category,
           image: food.image,
+          images: Array.isArray(food.images) && food.images.length > 0 ? food.images : (food.image ? [food.image] : []),
           prepTimeMinutes: food.prepTimeMinutes || 25,
           available: food.available,
           tags: Array.isArray(food.tags) ? food.tags : []
@@ -320,7 +322,10 @@ export function AdminFoodForm() {
       try {
         setIsUploadingImage(true)
         const response = await axiosInstance.post('/foods/upload', { imageData: reader.result })
-        setFormData(prev => ({ ...prev, image: response.data.url }))
+        setFormData((prev) => {
+          const updatedImages = [...new Set([...(prev.images || []), response.data.url])]
+          return { ...prev, image: updatedImages[0] || response.data.url, images: updatedImages }
+        })
       } catch (error) {
         console.error('Failed to upload image:', error)
         alert(error.response?.data?.message || 'Image upload failed')
@@ -334,14 +339,20 @@ export function AdminFoodForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!formData.image) {
-      alert('Please upload a food image first.')
+    if (!formData.images?.length) {
+      alert('Please upload at least one food image first.')
       return
     }
 
     try {
       setIsSubmitting(true)
-      const payload = { ...formData, price: Number(formData.price), prepTimeMinutes: Number(formData.prepTimeMinutes) }
+      const payload = {
+        ...formData,
+        image: formData.images[0],
+        images: formData.images,
+        price: Number(formData.price),
+        prepTimeMinutes: Number(formData.prepTimeMinutes)
+      }
       if (isEditMode) {
         await axiosInstance.put(`/foods/${foodId}`, payload)
       } else {
@@ -373,6 +384,17 @@ export function AdminFoodForm() {
       ...prev,
       tags: prev.tags.filter((tag) => tag !== tagToRemove)
     }))
+  }
+
+  const removeImage = (imageToRemove) => {
+    setFormData((prev) => {
+      const updatedImages = (prev.images || []).filter((img) => img !== imageToRemove)
+      return {
+        ...prev,
+        images: updatedImages,
+        image: updatedImages[0] || ''
+      }
+    })
   }
 
   if (isLoading) return <div className="text-center text-slate-500">Loading menu form...</div>
@@ -448,7 +470,28 @@ export function AdminFoodForm() {
           <label className="block text-sm font-medium text-slate-700">Menu image</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} className="input-field" />
           {isUploadingImage && <p className="text-sm text-amber-600">Uploading image to Cloudinary...</p>}
-          {formData.image && <img src={formData.image} alt="Preview" className="h-28 w-28 object-cover rounded-lg border border-slate-200" />}
+          {formData.images?.length > 0 && (
+            <div className="flex flex-wrap gap-3">
+              {formData.images.map((img, index) => (
+                <div key={img} className="relative">
+                  <img src={img} alt={`Preview ${index + 1}`} className="h-28 w-28 object-cover rounded-lg border border-slate-200" />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(img)}
+                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-rose-500 text-white text-sm leading-none"
+                    aria-label={`Remove image ${index + 1}`}
+                  >
+                    ×
+                  </button>
+                  {index === 0 && (
+                    <span className="absolute left-2 bottom-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white">
+                      Cover
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-3">
